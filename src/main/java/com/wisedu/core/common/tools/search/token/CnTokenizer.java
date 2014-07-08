@@ -1,5 +1,9 @@
 package com.wisedu.core.common.tools.search.token;
 
+import org.apache.lucene.analysis.Tokenizer;
+
+import java.io.IOException;
+import java.io.Reader;
 import java.util.LinkedList;
 
 /**
@@ -9,7 +13,20 @@ import java.util.LinkedList;
  * Time: 下午10:53
  * To change this template use File | Settings | File Templates.
  */
-public class CnTokenizer {
+public class CnTokenizer  extends Tokenizer {
+
+    protected CnTokenizer(Reader input) {
+        super(input);
+    }
+
+    protected CnTokenizer(AttributeFactory factory, Reader input) {
+        super(factory, input);
+    }
+
+    @Override
+    public boolean incrementToken() throws IOException {
+        return false;
+    }
 
     /**
      * 逆向邻接表
