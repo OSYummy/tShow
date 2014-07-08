@@ -9,64 +9,69 @@ package com.wisedu.core.common.tools.search.token;
  * To change this template use File | Settings | File Templates.
  */
 public class CnToken {
-    private String _text;    //词;
+    private String term;    //词;
 
-    private String _type;    //词性;
+    private String type;    //词性;
 
-    private int _start;          //起始位置;
+    private int start;          //起始位置;
 
-    private int _end;            //结束位置;
+    private int end;            //结束位置;
 
-    private int  _freq;          //词频;
+    private int  freq;          //词频;
 
     public CnToken() {
     }
 
-    public CnToken(String text, String type, int start, int end, int freq) {
-        _text = text;
-        _type = type;
-        _start = start;
-        _end = end;
-        _freq = freq;
+    public CnToken(String term, String type, int start, int end, int freq) {
+        this.term = term;
+        this.type = type;
+        this.start = start;
+        this.end = end;
+        this.freq = freq;
     }
 
-    public String getText() {
-        return _text;
+    public String getTerm() {
+        return term;
     }
 
-    public void setText(String text) {
-        _text = text;
+    public void setTerm(String term) {
+        this.term = term;
     }
 
     public String getType() {
-        return _type;
+        return type;
     }
 
     public void setType(String type) {
-        _type = type;
+        this.type = type;
     }
 
     public int getStart() {
-        return _start;
+        return start;
     }
 
     public void setStart(int start) {
-        _start = start;
+        this.start = start;
     }
 
     public int getEnd() {
-        return _end;
+        return end;
     }
 
     public void setEnd(int end) {
-        _end = end;
+        this.end = end;
     }
 
     public int getFreq() {
-        return _freq;
+        return freq;
     }
 
     public void setFreq(int freq) {
-        _freq = freq;
+        this.freq = freq;
+    }
+
+    public String toString() {
+        return "text: " + term + " start: " + start + " end: " + end
+                +"--------type: "+type;
     }
 }

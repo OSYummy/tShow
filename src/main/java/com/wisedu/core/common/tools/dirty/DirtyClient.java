@@ -2,9 +2,10 @@ package com.wisedu.core.common.tools.dirty;
 
 import com.wisedu.core.common.exception.ServiceException;
 import com.wisedu.core.common.tools.dirty.doc.TopDocs;
-import com.wisedu.tShow.service.dirty.Constants;
+import com.wisedu.tShow.service.dirty.DirtyConstants;
 import org.apache.axiom.om.*;
 import org.apache.axis2.AxisFault;
+import org.apache.axis2.Constants;
 import org.apache.axis2.addressing.EndpointReference;
 import org.apache.axis2.client.Options;
 import org.apache.axis2.client.ServiceClient;
@@ -39,7 +40,7 @@ public class DirtyClient {
         if (fac==null){
             fac = OMAbstractFactory.getOMFactory();
         }
-        omNS = fac.createOMNamespace(Constants.NAMESPACE, "tns");
+        omNS = fac.createOMNamespace(DirtyConstants.NAMESPACE, "tns");
     }
 
     /**
@@ -58,15 +59,15 @@ public class DirtyClient {
      */
     public TopDocs matches(String accessToken, File file, int n) throws ServiceException {
         // 构建消息
-        OMElement root = fac.createOMElement(Constants.SERVICE_MATCHES, omNS);
+        OMElement root = fac.createOMElement(DirtyConstants.SERVICE_MATCHES, omNS);
 
         // 授权令牌
-        OMElement omToken = fac.createOMElement(Constants.TAG_TOKEN, omNS);
+        OMElement omToken = fac.createOMElement(DirtyConstants.TAG_TOKEN, omNS);
         omToken.setText(accessToken);
         root.addChild(omToken);
 
         // 命中数
-        OMElement omHitCount = fac.createOMElement(Constants.TAG_HITCOUNT, omNS);
+        OMElement omHitCount = fac.createOMElement(DirtyConstants.TAG_HITCOUNT, omNS);
         omHitCount.setText(Integer.toString(n));
         root.addChild(omHitCount);
 
@@ -85,7 +86,7 @@ public class DirtyClient {
         options.setTo(targetEPR);
 
         // 使用http协议
-        options.setTransportInProtocol(org.apache.axis2.Constants.TRANSPORT_HTTP);
+        options.setTransportInProtocol(Constants.TRANSPORT_HTTP);
 
         // SO_TIMEOUT in milliseconds, which is the timeout for waiting for data or,
         // put differently, a maximum period inactivity between two consecutive data packets.
@@ -94,7 +95,7 @@ public class DirtyClient {
         options.setProperty(HTTPConstants.SO_TIMEOUT, 60000);
 
         // 使用MTOM传输
-        options.setTransportInProtocol(org.apache.axis2.Constants.TRANSPORT_HTTP);
+        options.setProperty(Constants.Configuration.ENABLE_MTOM, true);
 
         TopDocs docs = null;
         ServiceClient client = null;
