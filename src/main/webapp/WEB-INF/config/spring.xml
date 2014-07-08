@@ -8,4 +8,6 @@
     <!--<import resource="datasource.xml" />-->
     <!--定时任务-->
     <!--<import resource="quartz.xml" />-->
+    <!--系统配置-->
+    <import resource="tShow.xml" />
 </beans>

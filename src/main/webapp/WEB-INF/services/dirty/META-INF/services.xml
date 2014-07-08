@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<service name="Dirty">
+    <parameter name="ServiceClass" locked="false">com.wisedu.tShow.service.dirty.DirtyService</parameter>
+    <operation name="matches">
+        <messageReceiver class="org.apache.axis2.receivers.RawXMLINOutMessageReceiver"/>
+    </operation>
+</service>
