@@ -15,4 +15,16 @@ public class DirtyConstants {
     public final static String TAG_TOKEN = "token";
 
     public final static String TAG_HITCOUNT = "hitCount";
+
+    public final static String TAG_TOPDOCS = "topDocs";
+
+    public final static String TAG_TOTALCOUNT = "totalCount";
+
+    public final static String TAG_DOCS = "docs";
+
+    public final static String TAG_DOC = "doc";
+
+    public final static String TAG_PATTERN = "pattern";
+
+    public final static String TAG_OFFSET = "offset";
 }

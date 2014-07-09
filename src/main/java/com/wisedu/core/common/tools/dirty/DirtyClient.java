@@ -1,6 +1,7 @@
 package com.wisedu.core.common.tools.dirty;
 
 import com.wisedu.core.common.exception.ServiceException;
+import com.wisedu.core.common.tools.dirty.doc.Doc;
 import com.wisedu.core.common.tools.dirty.doc.TopDocs;
 import com.wisedu.tShow.service.dirty.DirtyConstants;
 import org.apache.axiom.om.*;
@@ -16,7 +17,9 @@ import org.slf4j.LoggerFactory;
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -85,50 +88,105 @@ public class DirtyClient {
         // 服务地址
         options.setTo(targetEPR);
 
-        // 使用http协议
-        options.setTransportInProtocol(Constants.TRANSPORT_HTTP);
-
         // SO_TIMEOUT in milliseconds, which is the timeout for waiting for data or,
         // put differently, a maximum period inactivity between two consecutive data packets.
         // A timeout value of zero is interpretedas an infinite timeout.
         // fyi: HttpMethodBase.readResponse(HttpState state, HttpConnection conn)
         options.setProperty(HTTPConstants.SO_TIMEOUT, 60000);
 
-        // 使用MTOM传输
-        options.setProperty(Constants.Configuration.ENABLE_MTOM, true);
+        // 使用http协议
+        options.setTransportInProtocol(Constants.TRANSPORT_HTTP);
 
-        TopDocs docs = null;
+        // 使用MTOM传输
+
+        // 使用MTOM传输文件
+        options.setProperty(Constants.Configuration.ENABLE_MTOM, Constants.VALUE_TRUE);
+
         ServiceClient client = null;
         try {
             client = new ServiceClient();
 
             client.setOptions(options);
 
+            // Directly invoke an anonymous operation(OutInAxisOperationClient) with an In-Out MEP.
+            // This method sends your supplied XML and receives a response.
             OMElement response = client.sendReceive(root);
 
-            OMElement omDocs = null;
+            // 解析响应
+            OMElement omTopDocs = null;
             Iterator iter = response.getChildElements();
             while (iter.hasNext()){
                 OMElement element = (OMElement)iter.next();
                 String localeName = element.getLocalName();
-                if (localeName.equals("")){
-                    omDocs = element.getFirstElement();
+
+                if (localeName.equals(DirtyConstants.TAG_TOPDOCS)){
+                    omTopDocs = element;
                 }
             }
+
+            OMElement omDocs = null;
+            OMElement omTotalCount = null;
+            iter = omTopDocs.getChildElements();
+            while (iter.hasNext()){
+                OMElement element = (OMElement)iter.next();
+                String localName = element.getLocalName();
+
+                if (localName.equals(DirtyConstants.TAG_DOCS)){
+                    omDocs = element;
+                }
+                if (localName.equals(DirtyConstants.TAG_TOTALCOUNT)){
+                    omTotalCount = element;
+                }
+            }
+
+            List omDocList = new ArrayList();
+            iter = omDocs.getChildElements();
+            while (iter.hasNext()){
+                OMElement element = (OMElement)iter.next();
+                String localName = element.getLocalName();
+                if (localName.equals(DirtyConstants.TAG_DOC)){
+                    omDocList.add(element);
+                }
+            }
+
+            List<Doc> docList = new ArrayList<Doc>();
+            for (int i=0; i<omDocList.size(); i++){
+                OMElement omDoc = (OMElement)omDocList.get(i);
+
+                OMElement omPattern = null;
+                OMElement omOffset = null;
+                iter = omDoc.getChildElements();
+                while (iter.hasNext()){
+                    OMElement element = (OMElement)iter.next();
+                    String localName = element.getLocalName();
+
+                    if (localName.equals(DirtyConstants.TAG_PATTERN)){
+                        omPattern = element;
+                    }
+                    if (localName.equals(DirtyConstants.TAG_OFFSET)){
+                        omOffset = element;
+                    }
+                }
+                docList.add(new Doc(omPattern.getText(), Integer.parseInt(omOffset.getText())));
+            }
+
+            TopDocs topDocs = new TopDocs(
+                    Integer.parseInt(omTotalCount.getText()), docList.toArray(new Doc[docList.size()])
+            );
+            return topDocs;
         } catch (AxisFault asf){
             log.error(asf.getMessage(), asf);
             throw new ServiceException("fail to match", asf);
         } finally {
-            if (client != null){
+            if (client!=null){
                 try {
-                    client.cleanup();
+                    // Release resources allocated by the transport during the last service invocation.
+                    client.cleanupTransport();
                 } catch (AxisFault asf){
                     log.error(asf.getMessage(), asf);
                     throw new ServiceException("fail to close the client", asf);
                 }
             }
         }
-
-        return docs;
     }
 }
