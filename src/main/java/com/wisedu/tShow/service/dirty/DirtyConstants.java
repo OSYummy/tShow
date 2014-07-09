@@ -16,6 +16,8 @@ public class DirtyConstants {
 
     public final static String TAG_HITCOUNT = "hitCount";
 
+    public final static String TAG_FILECONTENT = "fileContent";
+
     public final static String TAG_TOPDOCS = "topDocs";
 
     public final static String TAG_TOTALCOUNT = "totalCount";
@@ -27,4 +29,6 @@ public class DirtyConstants {
     public final static String TAG_PATTERN = "pattern";
 
     public final static String TAG_OFFSET = "offset";
+
+    public final static String TAG_RESPONSE = "response";
 }

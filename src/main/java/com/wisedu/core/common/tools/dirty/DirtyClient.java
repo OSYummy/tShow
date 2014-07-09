@@ -8,15 +8,18 @@ import org.apache.axiom.om.*;
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.Constants;
 import org.apache.axis2.addressing.EndpointReference;
+import org.apache.axis2.builder.unknowncontent.InputStreamDataSource;
 import org.apache.axis2.client.Options;
 import org.apache.axis2.client.ServiceClient;
 import org.apache.axis2.transport.http.HTTPConstants;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import sun.nio.cs.StandardCharsets;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
-import java.io.File;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -57,10 +60,54 @@ public class DirtyClient {
     /**
      * 脏词匹配
      * @param accessToken 授权令牌
-     * @param file 待匹配的文件地址
+     * @param file 待匹配的文件
      * @param n 匹配到脏词的前n项
      */
     public TopDocs matches(String accessToken, File file, int n) throws ServiceException {
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(file);
+        } catch (FileNotFoundException fnfe){
+            log.error(fnfe.getMessage(), fnfe);
+            throw new ServiceException("file not exists", fnfe);
+        }
+
+        try {
+            return matches(accessToken, fis, n);
+        } finally {
+            if (fis != null){
+                try {
+                    fis.close();
+                } catch (IOException ioe){
+                    log.error(ioe.getMessage(), ioe);
+                    throw new ServiceException("fail to close file", ioe);
+                }
+            }
+        }
+    }
+
+    public TopDocs matches(String accessToken, String text, int n) throws ServiceException {
+        InputStream is = IOUtils.toInputStream(text);
+
+        try {
+            return matches(accessToken, is, n);
+        } finally {
+            try {
+                is.close();
+            } catch (IOException ioe){
+                log.error(ioe.getMessage(), ioe);
+                throw new ServiceException("fail to close file", ioe);
+            }
+        }
+    }
+
+    /**
+     * 脏词匹配
+     * @param accessToken 授权令牌
+     * @param is 待匹配的文件流
+     * @param n 匹配到脏词的前n项
+     */
+    public TopDocs matches(String accessToken, InputStream is, int n) throws ServiceException {
         // 构建消息
         OMElement root = fac.createOMElement(DirtyConstants.SERVICE_MATCHES, omNS);
 
@@ -70,7 +117,7 @@ public class DirtyClient {
         root.addChild(omToken);
 
         // 命中数
-        OMElement omHitCount = fac.createOMElement(DirtyConstants.TAG_HITCOUNT, omNS);
+        OMElement omHitCount = fac.createOMElement(DirtyConstants.TAG_FILECONTENT, omNS);
         omHitCount.setText(Integer.toString(n));
         root.addChild(omHitCount);
 
@@ -78,7 +125,7 @@ public class DirtyClient {
         OMElement omFileContent = fac.createOMElement("", omNS);
         root.addChild(omFileContent);
 
-        DataHandler dataHandler = new DataHandler(new FileDataSource(file));
+        DataHandler dataHandler = new DataHandler(new InputStreamDataSource(is));
         OMText omText = fac.createOMText(dataHandler, true);
         omFileContent.addChild(omText);
 
