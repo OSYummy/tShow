@@ -28,10 +28,10 @@
         <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
     </listener>
 
-    <!--<filter>
+    <filter>
         <filter-name>timefilter</filter-name>
-        <filter-class>com.wisedu.core.common.web.filter.ProcessTimeFilter</filter-class>
-    </filter>-->
+        <filter-class>com.wisedu.core.web.filter.ProcessTimeFilter</filter-class>
+    </filter>
 
     <filter>
         <filter-name>characterEncodingFilter</filter-name>
@@ -66,10 +66,10 @@
         <load-on-startup>100</load-on-startup>
     </servlet>-->
 
-    <!--<filter-mapping>
+    <filter-mapping>
         <filter-name>timefilter</filter-name>
         <url-pattern>*.do</url-pattern>
-    </filter-mapping>-->
+    </filter-mapping>
 
     <filter-mapping>
         <filter-name>characterEncodingFilter</filter-name>
