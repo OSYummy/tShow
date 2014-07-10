@@ -2,7 +2,10 @@ package com.wisedu.tShow.app.wechat.web;
 
 import com.wisedu.core.common.utils.EncodeUtil;
 import com.wisedu.core.common.utils.PropertyConfigurerUtil;
+import org.dom4j.CDATA;
 import org.dom4j.Document;
+import org.dom4j.Element;
+import org.dom4j.dom.DOMCDATA;
 import org.dom4j.io.SAXReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -89,8 +92,25 @@ public class WechatController {
         } catch (Exception e){
             log.error(e.getMessage());
         }
-        if (doc == null){
-            return;
+
+        // 根节点
+        Element root = doc.getRootElement();
+
+        // 解析消息
+        String type = root.elementText("MsgType");
+        String from = root.elementText("FromUserName");
+        String to = root.elementText("ToUserName");
+
+        // 返回消息
+        try {
+            root.element("FromUserName").setText(new DOMCDATA(to).asXML());
+            root.element("ToUserName").setText(new DOMCDATA(from).asXML());
+            root.element("ToUserName").asXML();
+            root.element("CreateTime").setText(Long.toString(System.currentTimeMillis()));
+            System.out.println(doc.asXML());
+            response.getOutputStream().write(doc.asXML().getBytes());
+        } catch (IOException ioe){
+            log.error(ioe.getMessage());
         }
     }
 
