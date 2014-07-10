@@ -32,6 +32,7 @@ public class CnTokenizer  extends Tokenizer {
      * 逆向邻接表
      */
     private class AdjacencyList {
+        private int _vertexNum;
         private LinkedList _vertexList[];
 
         /**
@@ -39,7 +40,8 @@ public class CnTokenizer  extends Tokenizer {
          * @param n 图的节点数
          */
         public AdjacencyList(int n){
-            _vertexList = new LinkedList[n];
+            _vertexNum = n;
+            _vertexList = new LinkedList[_vertexNum];
         }
 
         /**
