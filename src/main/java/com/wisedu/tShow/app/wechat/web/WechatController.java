@@ -2,10 +2,11 @@ package com.wisedu.tShow.app.wechat.web;
 
 import com.wisedu.core.common.utils.EncodeUtil;
 import com.wisedu.core.common.utils.PropertyConfigurerUtil;
+import org.dom4j.Document;
+import org.dom4j.io.SAXReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,6 +33,11 @@ public class WechatController {
 
     private final static String appSecret = (String)PropertyConfigurerUtil.getProperty("app.wechat.appSecret");
 
+    /**
+     * 服务器配置验证
+     * @param request
+     * @param response
+     */
     @RequestMapping(value = "/wechat.do", method = RequestMethod.GET)
     public void check(HttpServletRequest request, HttpServletResponse response){
         // 加密签名
@@ -68,12 +74,33 @@ public class WechatController {
         }
     }
 
+    /**
+     * 消息处理
+     * @param request
+     * @param response
+     */
     @RequestMapping(value = "/wechat.do", method = RequestMethod.POST)
-    public void recv(HttpServletRequest request, HttpServletResponse response){
+    public void process(HttpServletRequest request, HttpServletResponse response) {
+        // 获取消息
+        Document doc = null;
+        try {
+            doc = new SAXReader().read(request.getInputStream());
+            System.out.println(doc.asXML());
+        } catch (Exception e){
+            log.error(e.getMessage());
+        }
+        if (doc == null){
+            return;
+        }
     }
 
-    @RequestMapping(value = "callback.do")
-    private String callback(HttpServletRequest request, HttpServletResponse response, ModelMap model){
+    /**
+     * 授权回调
+     * @param request
+     * @param model
+     */
+    @RequestMapping(value = "/callback.do")
+    private String callback(HttpServletRequest request, ModelMap model){
         model.addAttribute("code", request.getParameter("code"));
         return "wechat/callback";
     }
