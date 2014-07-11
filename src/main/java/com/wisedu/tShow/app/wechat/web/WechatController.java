@@ -1,10 +1,10 @@
 package com.wisedu.tShow.app.wechat.web;
 
 import com.wisedu.core.common.utils.PropertyConfigurerUtil;
-import com.wisedu.tShow.tools.wechat.WechatApiDispatch;
+import com.wisedu.tShow.tools.wechat.WechatApiDispatcher;
 import com.wisedu.tShow.utils.WechatUtil;
 import org.apache.commons.io.IOUtils;
-import org.dom4j.*;
+import org.dom4j.DocumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -35,9 +35,7 @@ public class WechatController {
 
     private final static String appSecret = (String)PropertyConfigurerUtil.getProperty("app.wechat.appSecret");
 
-    private static DocumentFactory docFactory = DocumentFactory.getInstance();
-
-    private static WechatApiDispatch dispatch = new WechatApiDispatch();
+    private static WechatApiDispatcher dispatcher = new WechatApiDispatcher();
 
     /**
      * 服务器配置验证
@@ -56,21 +54,22 @@ public class WechatController {
         String echostr = request.getParameter("echostr");
 
         try {
-            String digest = WechatUtil.checkSignature(signature, timestamp, nonce);
+            // 签名验证
+            String digest = WechatUtil.checkSignature(token, timestamp, nonce);
             if (signature.equals(digest)){
-                response.getOutputStream().write(echostr.getBytes());
+                response.getWriter().write(echostr);
             }
         } catch (Exception e){
             log.error(e.getMessage());
         }
     }
 
-    /**
+/*    *//**
      * 消息处理
      * @param request
      * @param response
-     */
-    /*@RequestMapping(value = "/wechat.do", method = RequestMethod.POST)
+     *//*
+    @RequestMapping(value = "/wechat.do", method = RequestMethod.POST)
     public void process(HttpServletRequest request, HttpServletResponse response) {
         // 获取消息
         Document docRecv = null;
@@ -134,7 +133,7 @@ public class WechatController {
 
         String digest = null;
         try {
-            // 消息验证
+            // 签名验证
             digest = WechatUtil.checkSignature(token, timestamp, nonce);
         } catch (NoSuchAlgorithmException nsae){
             log.error(nsae.getMessage());
@@ -145,7 +144,12 @@ public class WechatController {
             String msgRecv = IOUtils.toString(request.getInputStream());
 
             // 消息转发
-            String msgSend = dispatch.excute(msgRecv);
+            String msgSend = null;
+            try {
+                dispatcher.excute(msgRecv);
+            } catch (DocumentException dme){
+                log.error(dme.getMessage());
+            }
 
             // 消息输出
             response.setCharacterEncoding("utf-8");

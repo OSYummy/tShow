@@ -1,8 +1,6 @@
 package com.wisedu.tShow.utils;
 
 import com.wisedu.core.common.utils.EncodeUtil;
-import com.wisedu.core.common.utils.PropertyConfigurerUtil;
-
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
@@ -14,11 +12,11 @@ import java.util.Arrays;
  * To change this template use File | Settings | File Templates.
  */
 public class WechatUtil {
-    public static String checkSignature(String signature, String timestamp, String nonce)
+    public static String checkSignature(String token, String timestamp, String nonce)
             throws NoSuchAlgorithmException{
         // 字典序排序;
         String[] plainText={
-                (String) PropertyConfigurerUtil.getProperty("app.wechat.token"), timestamp, nonce
+                token, timestamp, nonce
         };
         Arrays.sort(plainText);
 
