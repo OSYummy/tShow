@@ -1,12 +1,10 @@
 package com.wisedu.tShow.app.wechat.web;
 
-import com.wisedu.core.common.utils.EncodeUtil;
 import com.wisedu.core.common.utils.PropertyConfigurerUtil;
+import com.wisedu.tShow.tools.wechat.WechatApiDispatch;
+import com.wisedu.tShow.utils.WechatUtil;
+import org.apache.commons.io.IOUtils;
 import org.dom4j.*;
-import org.dom4j.dom.DOMCDATA;
-import org.dom4j.dom.DOMDocument;
-import org.dom4j.dom.DOMElement;
-import org.dom4j.io.SAXReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -18,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,11 +29,15 @@ import java.util.Arrays;
 public class WechatController {
     private final static Logger log = LoggerFactory.getLogger(WechatController.class);
 
+    private final static String token = (String)PropertyConfigurerUtil.getProperty("app.wechat.token");
+
     private final static String appId = (String)PropertyConfigurerUtil.getProperty("app.wechat.appId");
 
     private final static String appSecret = (String)PropertyConfigurerUtil.getProperty("app.wechat.appSecret");
 
     private static DocumentFactory docFactory = DocumentFactory.getInstance();
+
+    private static WechatApiDispatch dispatch = new WechatApiDispatch();
 
     /**
      * 服务器配置验证
@@ -54,28 +55,13 @@ public class WechatController {
         // 随机字符串
         String echostr = request.getParameter("echostr");
 
-        // 字典序排序;
-        String[] plainText={
-                (String)PropertyConfigurerUtil.getProperty("app.wechat.token"), timestamp, nonce
-        };
-        Arrays.sort(plainText);
-
-        // SHA加密;
-        String digest=null;
         try {
-            digest = EncodeUtil.getDigestOfString(
-                    EncodeUtil.SHA1, plainText[0] + plainText[1] + plainText[2]
-            );
-        } catch (NoSuchAlgorithmException e){
-            log.error(e.getMessage());
-        }
-
-        try {
+            String digest = WechatUtil.checkSignature(signature, timestamp, nonce);
             if (signature.equals(digest)){
                 response.getOutputStream().write(echostr.getBytes());
             }
-        } catch (IOException ioe){
-            log.error(ioe.getMessage());
+        } catch (Exception e){
+            log.error(e.getMessage());
         }
     }
 
@@ -84,7 +70,7 @@ public class WechatController {
      * @param request
      * @param response
      */
-    @RequestMapping(value = "/wechat.do", method = RequestMethod.POST)
+    /*@RequestMapping(value = "/wechat.do", method = RequestMethod.POST)
     public void process(HttpServletRequest request, HttpServletResponse response) {
         // 获取消息
         Document docRecv = null;
@@ -129,6 +115,43 @@ public class WechatController {
             response.getWriter().write(docSend.asXML());
         } catch (IOException ioe){
             log.error(ioe.getMessage());
+        }
+    }*/
+
+    /**
+     * 消息处理
+     * @param request
+     * @param response
+     */
+    @RequestMapping(value = "/wechat.do", method = RequestMethod.POST)
+    public void process(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        // 加密签名
+        String signature = request.getParameter("signature");
+        // 时间戳
+        String timestamp = request.getParameter("timestamp");
+        // 随机数
+        String nonce = request.getParameter("nonce");
+
+        String digest = null;
+        try {
+            // 消息验证
+            digest = WechatUtil.checkSignature(token, timestamp, nonce);
+        } catch (NoSuchAlgorithmException nsae){
+            log.error(nsae.getMessage());
+        }
+
+        if (signature.equals(digest)){
+            // 消息接收
+            String msgRecv = IOUtils.toString(request.getInputStream());
+
+            // 消息转发
+            String msgSend = dispatch.excute(msgRecv);
+
+            // 消息输出
+            response.setCharacterEncoding("utf-8");
+            response.getWriter().write(msgSend);
+        } else {
+            log.error("fail to check check signature");
         }
     }
 
