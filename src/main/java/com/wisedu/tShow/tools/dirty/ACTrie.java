@@ -1,7 +1,7 @@
-package com.wisedu.core.common.tools.dirty;
+package com.wisedu.tShow.tools.dirty;
 
-import com.wisedu.core.common.tools.dirty.doc.Doc;
-import com.wisedu.core.common.tools.dirty.doc.TopDocs;
+import com.wisedu.tShow.tools.dirty.doc.Doc;
+import com.wisedu.tShow.tools.dirty.doc.TopDocs;
 
 import java.io.*;
 import java.util.*;

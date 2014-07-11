@@ -1,4 +1,4 @@
-package com.wisedu.core.common.tools.search.token;
+package com.wisedu.tShow.tools.search.token;
 
 import org.apache.lucene.analysis.Tokenizer;
 

@@ -1,4 +1,4 @@
-package com.wisedu.core.common.tools.search.token;
+package com.wisedu.tShow.tools.search.token;
 
 /**
  * 中文分词的词元

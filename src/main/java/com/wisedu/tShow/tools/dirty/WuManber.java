@@ -1,4 +1,4 @@
-package com.wisedu.core.common.tools.dirty;
+package com.wisedu.tShow.tools.dirty;
 
 import java.io.*;
 import java.util.*;

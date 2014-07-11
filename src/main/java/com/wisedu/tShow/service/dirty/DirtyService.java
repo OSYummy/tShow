@@ -1,20 +1,18 @@
 package com.wisedu.tShow.service.dirty;
 
-import com.wisedu.core.common.tools.dirty.ACTrie;
-import com.wisedu.core.common.tools.dirty.doc.Doc;
-import com.wisedu.core.common.tools.dirty.doc.TopDocs;
+import com.wisedu.tShow.tools.dirty.ACTrie;
+import com.wisedu.tShow.tools.dirty.doc.Doc;
+import com.wisedu.tShow.tools.dirty.doc.TopDocs;
 import com.wisedu.core.common.utils.PropertyConfigurerUtil;
 import org.apache.axiom.om.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.activation.DataHandler;
-import javax.xml.namespace.QName;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URI;
 import java.util.Iterator;
 
 /**

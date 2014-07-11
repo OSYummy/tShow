@@ -2,10 +2,10 @@ package com.wisedu.tShow.app.wechat.web;
 
 import com.wisedu.core.common.utils.EncodeUtil;
 import com.wisedu.core.common.utils.PropertyConfigurerUtil;
-import org.dom4j.CDATA;
-import org.dom4j.Document;
-import org.dom4j.Element;
+import org.dom4j.*;
 import org.dom4j.dom.DOMCDATA;
+import org.dom4j.dom.DOMDocument;
+import org.dom4j.dom.DOMElement;
 import org.dom4j.io.SAXReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +35,8 @@ public class WechatController {
     private final static String appId = (String)PropertyConfigurerUtil.getProperty("app.wechat.appId");
 
     private final static String appSecret = (String)PropertyConfigurerUtil.getProperty("app.wechat.appSecret");
+
+    private static DocumentFactory docFactory = DocumentFactory.getInstance();
 
     /**
      * 服务器配置验证
@@ -85,30 +87,46 @@ public class WechatController {
     @RequestMapping(value = "/wechat.do", method = RequestMethod.POST)
     public void process(HttpServletRequest request, HttpServletResponse response) {
         // 获取消息
-        Document doc = null;
+        Document docRecv = null;
         try {
-            doc = new SAXReader().read(request.getInputStream());
-            System.out.println(doc.asXML());
+            docRecv = new SAXReader().read(request.getInputStream());
         } catch (Exception e){
             log.error(e.getMessage());
         }
 
         // 根节点
-        Element root = doc.getRootElement();
+        Element rootRecv = docRecv.getRootElement();
 
         // 解析消息
-        String type = root.elementText("MsgType");
-        String from = root.elementText("FromUserName");
-        String to = root.elementText("ToUserName");
+        String type = rootRecv.elementText("MsgType");
+        String from = rootRecv.elementText("FromUserName");
+        String to = rootRecv.elementText("ToUserName");
+        String text = rootRecv.element("Content").getText();
 
-        // 返回消息
+        // 构建响应
+        Document docSend = docFactory.createDocument();
+        Element rootSend = docSend.addElement(new QName("xml"));
+
+        Element eleFromUserName = docFactory.createElement(new QName("FromUserName"));
+        eleFromUserName.addCDATA(to);
+        rootSend.add(eleFromUserName);
+
+        rootSend.addElement("ToUserName");
+        rootSend.element("ToUserName").addCDATA(from);
+
+        rootSend.addElement("CreateTime");
+        rootSend.element("CreateTime").setText(Integer.toString((int)System.currentTimeMillis()));
+
+        rootSend.addElement("MsgType");
+        rootSend.element("MsgType").addCDATA(type);
+
+        rootSend.addElement("Content");
+        rootSend.element("Content").addCDATA(text);
+
         try {
-            root.element("FromUserName").setText(new DOMCDATA(to).asXML());
-            root.element("ToUserName").setText(new DOMCDATA(from).asXML());
-            root.element("ToUserName").asXML();
-            root.element("CreateTime").setText(Long.toString(System.currentTimeMillis()));
-            System.out.println(doc.asXML());
-            response.getOutputStream().write(doc.asXML().getBytes());
+            // 输出消息
+            response.setCharacterEncoding("utf-8");
+            response.getWriter().write(docSend.asXML());
         } catch (IOException ioe){
             log.error(ioe.getMessage());
         }

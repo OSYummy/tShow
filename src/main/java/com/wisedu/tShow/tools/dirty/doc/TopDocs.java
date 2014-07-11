@@ -1,4 +1,4 @@
-package com.wisedu.core.common.tools.dirty.doc;
+package com.wisedu.tShow.tools.dirty.doc;
 
 import java.io.Serializable;
 

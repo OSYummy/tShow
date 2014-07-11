@@ -1,8 +1,8 @@
-package com.wisedu.core.common.tools.dirty;
+package com.wisedu.tShow.tools.dirty;
 
 import com.wisedu.core.common.exception.ServiceException;
-import com.wisedu.core.common.tools.dirty.doc.Doc;
-import com.wisedu.core.common.tools.dirty.doc.TopDocs;
+import com.wisedu.tShow.tools.dirty.doc.Doc;
+import com.wisedu.tShow.tools.dirty.doc.TopDocs;
 import com.wisedu.tShow.service.dirty.DirtyConstants;
 import org.apache.axiom.om.*;
 import org.apache.axis2.AxisFault;
@@ -15,10 +15,8 @@ import org.apache.axis2.transport.http.HTTPConstants;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.nio.cs.StandardCharsets;
 
 import javax.activation.DataHandler;
-import javax.activation.FileDataSource;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
