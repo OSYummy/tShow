@@ -35,51 +35,58 @@ public class WechatApiDispatcher {
         Document doc = new SAXReader().read(msg);
         Element root = doc.getRootElement();
 
+        // 返回消息
         BaseMessage requestMsg = null;
-        //消息类型
-        RequestMsgType msgType = null;
-        String type = root.elementText("MsgType");
-        switch (msgType){
-            case text:
-                requestMsg = new RequestText();
-                break;
-            case location:
-                break;
-            case image:
-                break;
-            case voice:
-                break;
-            case video:
-                break;
-            case link:
-                break;
-            case event:
-                //判断Event类型
-                EventType eventType = null;
-                switch (eventType){
-                    case location:  //地理位置
-                        break;
-                    case subscribe: //订阅（关注）
-                        requestMsg = new RequestEventSubscribe();
-                        break;
-                    case unsubscribe:   //取消订阅（关注）
-                        break;
-                    case click: //菜单点击
-                        break;
-                    case scan:  //二维码扫描
-                        break;
-                    case view:  //URL跳转
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            default:
-                throw new IllegalArgumentException("MsgType：" + type + " Unknown");
-        }
+       try {
+           //消息类型
+           String msgType = root.elementText("MsgType");
+           RequestMsgType requestMsgType = RequestMsgType.valueOf(msg);
+           switch (requestMsgType){
+               case text:
+                   requestMsg = new RequestText();
+                   break;
+               case location:
+                   break;
+               case image:
+                   break;
+               case voice:
+                   break;
+               case video:
+                   break;
+               case link:
+                   break;
+               case event:
+                   //判断Event类型
+                   EventType eventType = EventType.valueOf(
+                           root.elementText("Event")
+                   );
+                   switch (eventType){
+                       case location:  //地理位置
+                           break;
+                       case subscribe: //订阅（关注）
+                           requestMsg = new RequestEventSubscribe();
+                           break;
+                       case unsubscribe:   //取消订阅（关注）
+                           break;
+                       case click: //菜单点击
+                           break;
+                       case scan:  //二维码扫描
+                           break;
+                       case view:  //URL跳转
+                           break;
+                       default:
+                           break;
+                   }
+                   break;
+               default:
+                   throw new IllegalArgumentException("MsgType：" + msgType + " Unknown");
+           }
+           // 填充消息
+           EntityUtil.FillEntityWithXml(requestMsg, root);
+       } catch (IllegalArgumentException ilgamte){
+           throw new IllegalArgumentException("RequestMessage转换出错！可能是MsgType不存在！，XML：" + doc.asXML(), ilgamte);
+       }
 
-        // 填充消息
-        EntityUtil.FillEntityWithXml(requestMsg, root);
         return requestMsg;
     }
 }

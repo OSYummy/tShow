@@ -8,20 +8,20 @@ package com.wisedu.tShow.tools.wechat.types;
  * To change this template use File | Settings | File Templates.
  */
 public enum EventType {
-    // 地理位置
-    location,
-
     // 订阅
     subscribe,
 
     // 取消订阅
     unsubscribe,
 
-    // 自定义菜单点击事件
-    click,
-
     // 二维码扫描
     scan,
+
+    // 地理位置
+    location,
+
+    // 自定义菜单点击事件
+    click,
 
     // URL跳转
     view
