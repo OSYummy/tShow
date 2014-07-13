@@ -1,5 +1,11 @@
 package com.wisedu.tShow.tools.wechat;
 
+import com.wisedu.tShow.app.wechat.bo.message.BaseMessage;
+import com.wisedu.tShow.app.wechat.bo.message.event.RequestEventSubscribe;
+import com.wisedu.tShow.app.wechat.bo.message.request.RequestText;
+import com.wisedu.tShow.tools.wechat.types.EventType;
+import com.wisedu.tShow.tools.wechat.types.RequestMsgType;
+import com.wisedu.tShow.tools.wechat.utils.EntityUtil;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentFactory;
@@ -24,18 +30,56 @@ public class WechatApiDispatcher {
      * 处理消息
      * @param msg
      */
-    public String excute(String msg) throws DocumentException{
+    public BaseMessage excute(String msg) throws DocumentException{
         // 根节点
         Document doc = new SAXReader().read(msg);
         Element root = doc.getRootElement();
 
-        // 消息类型
-        String msgType = root.elementText("MsgType");
-        switch (1){
-            case 1:
+        BaseMessage requestMsg = null;
+        //消息类型
+        RequestMsgType msgType = null;
+        String type = root.elementText("MsgType");
+        switch (msgType){
+            case text:
+                requestMsg = new RequestText();
+                break;
+            case location:
+                break;
+            case image:
+                break;
+            case voice:
+                break;
+            case video:
+                break;
+            case link:
+                break;
+            case event:
+                //判断Event类型
+                EventType eventType = null;
+                switch (eventType){
+                    case location:  //地理位置
+                        break;
+                    case subscribe: //订阅（关注）
+                        requestMsg = new RequestEventSubscribe();
+                        break;
+                    case unsubscribe:   //取消订阅（关注）
+                        break;
+                    case click: //菜单点击
+                        break;
+                    case scan:  //二维码扫描
+                        break;
+                    case view:  //URL跳转
+                        break;
+                    default:
+                        break;
+                }
                 break;
             default:
+                throw new IllegalArgumentException("MsgType：" + type + " Unknown");
         }
-        return null;
+
+        // 填充消息
+        EntityUtil.FillEntityWithXml(requestMsg, root);
+        return requestMsg;
     }
 }
