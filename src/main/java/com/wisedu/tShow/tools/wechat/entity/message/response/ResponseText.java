@@ -1,6 +1,6 @@
-package com.wisedu.tShow.app.wechat.bo.message.response;
+package com.wisedu.tShow.tools.wechat.entity.message.response;
 
-import com.wisedu.tShow.app.wechat.bo.message.BaseMessage;
+import com.wisedu.tShow.tools.wechat.entity.message.BaseMessage;
 
 /**
  * Created with IntelliJ IDEA.

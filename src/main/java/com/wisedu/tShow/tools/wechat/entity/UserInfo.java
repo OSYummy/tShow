@@ -1,4 +1,4 @@
-package com.wisedu.tShow.app.wechat.bo;
+package com.wisedu.tShow.tools.wechat.entity;
 
 /**
  * Created with IntelliJ IDEA.

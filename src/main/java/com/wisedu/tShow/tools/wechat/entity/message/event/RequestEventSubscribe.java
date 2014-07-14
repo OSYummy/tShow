@@ -1,16 +1,16 @@
-package com.wisedu.tShow.app.wechat.bo.message.event;
+package com.wisedu.tShow.tools.wechat.entity.message.event;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * Created with IntelliJ IDEA.
  * User: YUMMY
- * Date: 14-7-14
- * Time: 下午4:15
+ * Date: 14-7-11
+ * Time: 下午5:07
  * To change this template use File | Settings | File Templates.
  */
 @XStreamAlias("xml")
-public class RequestEventScan extends BaseEvent{
+public class RequestEventSubscribe extends BaseEvent{
     // 开发者微信号
     @XStreamAlias("ToUserName")
     private String ToUserName;
@@ -27,19 +27,11 @@ public class RequestEventScan extends BaseEvent{
     @XStreamAlias("MsgType")
     private String MsgType;
 
-    // 事件类型，SCAN
+    // 事件类型，subscribe(订阅)、unsubscribe(取消订阅)
     @XStreamAlias("Event")
     private String Event;
 
-    // 事件KEY值，是一个32位无符号整数，即创建二维码时的二维码scene_id
-    @XStreamAlias("EventKey")
-    private Integer EventKey;
-
-    // 二维码的ticket，可用来换取二维码图片
-    @XStreamAlias("Ticket")
-    private String Ticket;
-
-    public RequestEventScan() {
+    public RequestEventSubscribe() {
 
     }
 }

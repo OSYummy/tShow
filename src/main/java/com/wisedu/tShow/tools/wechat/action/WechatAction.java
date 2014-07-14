@@ -1,5 +1,7 @@
 package com.wisedu.tShow.tools.wechat.action;
 
+import com.wisedu.tShow.tools.wechat.entity.message.BaseMessage;
+
 /**
  * Created with IntelliJ IDEA.
  * User: YUMMY
@@ -8,5 +10,5 @@ package com.wisedu.tShow.tools.wechat.action;
  * To change this template use File | Settings | File Templates.
  */
 public interface WechatAction {
-    String handleText(String text);
+    public BaseMessage handle(BaseMessage msg);
 }

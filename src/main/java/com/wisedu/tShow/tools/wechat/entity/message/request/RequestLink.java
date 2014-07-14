@@ -1,17 +1,17 @@
-package com.wisedu.tShow.app.wechat.bo.message.request;
+package com.wisedu.tShow.tools.wechat.entity.message.request;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.wisedu.tShow.app.wechat.bo.message.BaseMessage;
+import com.wisedu.tShow.tools.wechat.entity.message.BaseMessage;
 
 /**
  * Created with IntelliJ IDEA.
  * User: YUMMY
  * Date: 14-7-14
- * Time: 下午3:24
+ * Time: 下午3:27
  * To change this template use File | Settings | File Templates.
  */
 @XStreamAlias("xml")
-public class RequestVideo extends BaseMessage{
+public class RequestLink extends BaseMessage{
     // 开发者微信号
     @XStreamAlias("ToUserName")
     private String ToUserName;
@@ -28,18 +28,23 @@ public class RequestVideo extends BaseMessage{
     @XStreamAlias("MsgType")
     private String MsgType;
 
-    // 视频消息媒体id
-    @XStreamAlias("MediaId")
-    private String MediaId;
+    // 消息标题
+    @XStreamAlias("Title")
+    private String Title;
 
-    // 视频消息缩略图的媒体id
-    @XStreamAlias("ThumbMediaId")
-    private String ThumbMediaId;
+    // 消息标题
+    @XStreamAlias("Description")
+    private String Description;
+
+    // 消息描述
+    @XStreamAlias("URL")
+    private String Url;
 
     // 消息id，64位整型
     @XStreamAlias("MsgId")
     private Long MsgId;
 
-    public RequestVideo() {
+    public RequestLink() {
+
     }
 }

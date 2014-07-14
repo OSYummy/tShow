@@ -1,12 +1,11 @@
 package com.wisedu.tShow.tools.wechat;
 
-import com.thoughtworks.xstream.XStream;
-import com.wisedu.tShow.app.wechat.bo.message.BaseMessage;
-import com.wisedu.tShow.app.wechat.bo.message.event.*;
-import com.wisedu.tShow.app.wechat.bo.message.request.*;
+import com.wisedu.tShow.tools.wechat.action.WechatAction;
+import com.wisedu.tShow.tools.wechat.entity.message.BaseMessage;
+import com.wisedu.tShow.tools.wechat.entity.message.event.*;
+import com.wisedu.tShow.tools.wechat.entity.message.request.*;
 import com.wisedu.tShow.tools.wechat.types.EventType;
 import com.wisedu.tShow.tools.wechat.types.RequestMsgType;
-import com.wisedu.tShow.tools.wechat.utils.EntityUtil;
 import com.wisedu.tShow.tools.wechat.utils.XStreamUtil;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -17,6 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.StringReader;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -29,6 +30,19 @@ public class WechatApiDispatcher {
     private final static Logger log = LoggerFactory.getLogger(WechatApiDispatcher.class);
 
     private static DocumentFactory docFactory = DocumentFactory.getInstance();
+
+    public Map<String, WechatAction> msgHandlers;
+
+    public WechatApiDispatcher() {
+        if (msgHandlers == null){
+            msgHandlers = new HashMap<String, WechatAction>();
+        }
+        registerMsgHandler(null);
+    }
+
+    public void registerMsgHandler(WechatAction action){
+        msgHandlers.put("", action);
+    }
 
     /**
      * 处理消息
@@ -107,6 +121,10 @@ public class WechatApiDispatcher {
         // 填充消息
         requestMsg = XStreamUtil.fromXml(doc.asXML(), requestMsg);
 
-        return requestMsg;
+        // 处理消息
+        WechatAction action = msgHandlers.get("");
+        BaseMessage responseMsg = action.handle(requestMsg);
+
+        return responseMsg;
     }
 }

@@ -1,17 +1,16 @@
-package com.wisedu.tShow.app.wechat.bo.message.request;
+package com.wisedu.tShow.tools.wechat.entity.message.event;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.wisedu.tShow.app.wechat.bo.message.BaseMessage;
 
 /**
  * Created with IntelliJ IDEA.
  * User: YUMMY
- * Date: 14-7-11
- * Time: 下午4:55
+ * Date: 14-7-14
+ * Time: 下午4:20
  * To change this template use File | Settings | File Templates.
  */
 @XStreamAlias("xml")
-public class RequestText extends BaseMessage {
+public class RequestEventLocation extends BaseEvent{
     // 开发者微信号
     @XStreamAlias("ToUserName")
     private String ToUserName;
@@ -28,15 +27,23 @@ public class RequestText extends BaseMessage {
     @XStreamAlias("MsgType")
     private String MsgType;
 
-    // 文本消息内容
-    @XStreamAlias("Content")
-    private String Content;
+    // 事件类型，LOCATION
+    @XStreamAlias("Event")
+    private String Event;
 
-    // 消息id，64位整型
-    @XStreamAlias("MsgId")
-    private Long MsgId;
+    // 地理位置纬度
+    @XStreamAlias("Latitude")
+    private Double Latitude;
 
-    public RequestText() {
+    // 地理位置经度
+    @XStreamAlias("Longitude")
+    private Double Longitude;
+
+    // 地理位置精度
+    @XStreamAlias("Precision")
+    private Double Precision;
+
+    public RequestEventLocation() {
 
     }
 }
