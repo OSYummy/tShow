@@ -26,6 +26,7 @@ import java.util.Map;
  * Time: 下午1:38
  * To change this template use File | Settings | File Templates.
  */
+/*http://stackoverflow.com/questions/3569216/events-handling-with-generic-handlers-in-java*/
 public class WechatApiDispatcher {
     private final static Logger log = LoggerFactory.getLogger(WechatApiDispatcher.class);
 
