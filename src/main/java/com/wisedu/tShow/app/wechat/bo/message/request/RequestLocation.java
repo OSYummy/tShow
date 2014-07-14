@@ -6,12 +6,12 @@ import com.wisedu.tShow.app.wechat.bo.message.BaseMessage;
 /**
  * Created with IntelliJ IDEA.
  * User: YUMMY
- * Date: 14-7-11
- * Time: 下午4:55
+ * Date: 14-7-14
+ * Time: 下午3:15
  * To change this template use File | Settings | File Templates.
  */
 @XStreamAlias("xml")
-public class RequestText extends BaseMessage {
+public class RequestLocation extends BaseMessage{
     // 开发者微信号
     @XStreamAlias("ToUserName")
     private String ToUserName;
@@ -28,15 +28,27 @@ public class RequestText extends BaseMessage {
     @XStreamAlias("MsgType")
     private String MsgType;
 
-    // 文本消息内容
-    @XStreamAlias("Content")
-    private String Content;
+    // 地理位置纬度
+    @XStreamAlias("Location_X")
+    private Double Location_X;
+
+    // 地理位置经度
+    @XStreamAlias("Location_Y")
+    private Double Location_Y;
+
+    // 地图缩放大小
+    @XStreamAlias("Scale")
+    private Integer Scale;
+
+    // 地理位置信息
+    @XStreamAlias("Label")
+    private String Label;
 
     // 消息id，64位整型
     @XStreamAlias("MsgId")
     private Long MsgId;
 
-    public RequestText() {
+    public RequestLocation() {
 
     }
 }

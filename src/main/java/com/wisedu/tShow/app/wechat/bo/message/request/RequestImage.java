@@ -1,16 +1,17 @@
-package com.wisedu.tShow.app.wechat.bo.message.event;
+package com.wisedu.tShow.app.wechat.bo.message.request;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.wisedu.tShow.app.wechat.bo.message.BaseMessage;
 
 /**
  * Created with IntelliJ IDEA.
  * User: YUMMY
- * Date: 14-7-11
- * Time: 下午5:08
+ * Date: 14-7-14
+ * Time: 下午3:19
  * To change this template use File | Settings | File Templates.
  */
 @XStreamAlias("xml")
-public class RequestEventUnSubscribe extends BaseEvent {
+public class RequestImage extends BaseMessage{
     // 开发者微信号
     @XStreamAlias("ToUserName")
     private String ToUserName;
@@ -27,11 +28,19 @@ public class RequestEventUnSubscribe extends BaseEvent {
     @XStreamAlias("MsgType")
     private String MsgType;
 
-    // 事件类型，subscribe(订阅)、unsubscribe(取消订阅)
-    @XStreamAlias("Event")
-    private String Event;
+    // 图片链接
+    @XStreamAlias("PicUrl")
+    private String PicUrl;
 
-    public RequestEventUnSubscribe() {
+    // 图片消息媒体id
+    @XStreamAlias("MediaId")
+    private String MediaId;
+
+    // 消息id，64位整型
+    @XStreamAlias("MsgId")
+    private Long MsgId;
+
+    public RequestImage() {
 
     }
 }

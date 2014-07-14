@@ -5,12 +5,12 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 /**
  * Created with IntelliJ IDEA.
  * User: YUMMY
- * Date: 14-7-11
- * Time: 下午5:08
+ * Date: 14-7-14
+ * Time: 下午4:25
  * To change this template use File | Settings | File Templates.
  */
 @XStreamAlias("xml")
-public class RequestEventUnSubscribe extends BaseEvent {
+public class RequestEventView extends BaseEvent {
     // 开发者微信号
     @XStreamAlias("ToUserName")
     private String ToUserName;
@@ -27,11 +27,15 @@ public class RequestEventUnSubscribe extends BaseEvent {
     @XStreamAlias("MsgType")
     private String MsgType;
 
-    // 事件类型，subscribe(订阅)、unsubscribe(取消订阅)
+    // 事件类型，VIEW
     @XStreamAlias("Event")
     private String Event;
 
-    public RequestEventUnSubscribe() {
+    // 事件KEY值，设置的跳转URL
+    @XStreamAlias("EventKey")
+    private String EventKey;
+
+    public RequestEventView() {
 
     }
 }

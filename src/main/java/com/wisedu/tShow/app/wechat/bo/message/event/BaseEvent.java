@@ -10,13 +10,4 @@ import com.wisedu.tShow.app.wechat.bo.message.BaseMessage;
  * To change this template use File | Settings | File Templates.
  */
 public abstract class BaseEvent extends BaseMessage{
-    public String Event;
-
-    public String getEvent() {
-        return Event;
-    }
-
-    public void setEvent(String event) {
-        Event = event;
-    }
 }

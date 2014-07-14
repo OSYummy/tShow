@@ -141,12 +141,13 @@ public class WechatController {
 
         if (signature.equals(digest)){
             // 消息接收
-            String msgRecv = IOUtils.toString(request.getInputStream());
+            String msgRecv = IOUtils.toString(request.getInputStream(), "utf-8");
 
             // 消息转发
             String msgSend = null;
             try {
-                dispatcher.excute(msgRecv);
+                msgSend = dispatcher.excute(msgRecv).asXML();
+                System.out.println(msgSend);
             } catch (DocumentException dme){
                 log.error(dme.getMessage());
             }
