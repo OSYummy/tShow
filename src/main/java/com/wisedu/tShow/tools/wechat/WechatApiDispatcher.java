@@ -1,6 +1,9 @@
 package com.wisedu.tShow.tools.wechat;
 
-import com.wisedu.tShow.tools.wechat.action.WechatAction;
+import com.wisedu.tShow.tools.wechat.entity.message.response.Image;
+import com.wisedu.tShow.tools.wechat.entity.message.response.ResponseImage;
+import com.wisedu.tShow.tools.wechat.entity.message.response.ResponseText;
+import com.wisedu.tShow.tools.wechat.handler.HandlerManager;
 import com.wisedu.tShow.tools.wechat.entity.message.BaseMessage;
 import com.wisedu.tShow.tools.wechat.entity.message.event.*;
 import com.wisedu.tShow.tools.wechat.entity.message.request.*;
@@ -16,8 +19,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.StringReader;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,23 +27,16 @@ import java.util.Map;
  * Time: 下午1:38
  * To change this template use File | Settings | File Templates.
  */
-/*http://stackoverflow.com/questions/3569216/events-handling-with-generic-handlers-in-java*/
 public class WechatApiDispatcher {
     private final static Logger log = LoggerFactory.getLogger(WechatApiDispatcher.class);
 
-    private static DocumentFactory docFactory = DocumentFactory.getInstance();
+    public static HandlerManager handlerManager;
 
-    public Map<String, WechatAction> msgHandlers;
+    private static DocumentFactory docFactory;
 
     public WechatApiDispatcher() {
-        if (msgHandlers == null){
-            msgHandlers = new HashMap<String, WechatAction>();
-        }
-        registerMsgHandler(null);
-    }
-
-    public void registerMsgHandler(WechatAction action){
-        msgHandlers.put("", action);
+        handlerManager = new HandlerManager();
+        docFactory = DocumentFactory.getInstance();
     }
 
     /**
@@ -55,29 +49,30 @@ public class WechatApiDispatcher {
         Element root = doc.getRootElement();
 
         // 返回消息
-        BaseMessage requestMsg = null;
+        BaseMessage request = null;
+        BaseMessage response = null;
         try {
             //消息类型
             String msgType = root.elementText("MsgType");
             RequestMsgType requestMsgType = RequestMsgType.valueOf(msgType);
             switch (requestMsgType){
                 case text:
-                    requestMsg = new RequestText();
+                    request = new RequestText();
                     break;
                 case location:
-                    requestMsg = new RequestLocation();
+                    request = new RequestLocation();
                     break;
                 case image:
-                    requestMsg = new RequestImage();
+                    request = new RequestImage();
                     break;
                 case voice:
-                    requestMsg = new RequestVoice();
+                    request = new RequestVoice();
                     break;
                 case video:
-                    requestMsg = new RequestVideo();
+                    request = new RequestVideo();
                     break;
                 case link:
-                    requestMsg = new RequestLink();
+                    request = new RequestLink();
                     break;
                 case event:
                     //判断Event类型
@@ -85,23 +80,23 @@ public class WechatApiDispatcher {
                             root.elementText("Event")
                     );
                     switch (eventType){
-                        case location:  //地理位置
-                            requestMsg = new RequestEventLocation();
+                        case LOCATION:  //地理位置
+                            request = new RequestEventLocation();
                             break;
                         case subscribe: //订阅（关注）
-                            requestMsg = new RequestEventSubscribe();
+                            request = new RequestEventSubscribe();
                             break;
                         case unsubscribe:   //取消订阅（关注）
-                            requestMsg = new RequestEventUnSubscribe();
+                            request = new RequestEventUnSubscribe();
                             break;
-                        case click: //菜单点击
-                            requestMsg = new RequestEventClick();
+                        case CLICK: //菜单点击
+                            request = new RequestEventClick();
                             break;
-                        case scan:  //二维码扫描
-                            requestMsg = new RequestEventScan();
+                        case SCAN:  //二维码扫描
+                            request = new RequestEventScan();
                             break;
-                        case view:  //URL跳转
-                            requestMsg = new RequestEventView();
+                        case VIEW:  //URL跳转
+                            request = new RequestEventView();
                             break;
                         default:
                             break;
@@ -115,17 +110,16 @@ public class WechatApiDispatcher {
             throw new IllegalArgumentException("message convert error, xml: " + doc.asXML(), ilgamte);
         }
 
-        if (requestMsg == null){
+        if (request == null){
             return null;
         }
 
         // 填充消息
-        requestMsg = XStreamUtil.fromXml(doc.asXML(), requestMsg);
+        request = XStreamUtil.fromXml(doc.asXML(), request);
 
         // 处理消息
-        WechatAction action = msgHandlers.get("");
-        BaseMessage responseMsg = action.handle(requestMsg);
+        response = handlerManager.dispatch(request);
 
-        return responseMsg;
+        return response;
     }
 }

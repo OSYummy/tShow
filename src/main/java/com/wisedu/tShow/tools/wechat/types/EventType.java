@@ -15,14 +15,14 @@ public enum EventType {
     unsubscribe,
 
     // 二维码扫描
-    scan,
+    SCAN,
 
     // 地理位置
-    location,
+    LOCATION,
 
     // 自定义菜单点击事件
-    click,
+    CLICK,
 
     // URL跳转
-    view
+    VIEW
 }

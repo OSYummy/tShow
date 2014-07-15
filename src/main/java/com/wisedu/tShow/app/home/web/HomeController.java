@@ -20,7 +20,7 @@ public class HomeController {
 
     @RequestMapping(value="/index.do")
     public String index(ModelMap model){
-        model.addAttribute("greet", "Hello World");
+        model.addAttribute("greet", "我是首页");
         return "home/index";
     }
 }

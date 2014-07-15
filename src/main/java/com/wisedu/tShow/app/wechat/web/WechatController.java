@@ -64,59 +64,6 @@ public class WechatController {
         }
     }
 
-/*    *//**
-     * 消息处理
-     * @param request
-     * @param response
-     *//*
-    @RequestMapping(value = "/wechat.do", method = RequestMethod.POST)
-    public void process(HttpServletRequest request, HttpServletResponse response) {
-        // 获取消息
-        Document docRecv = null;
-        try {
-            docRecv = new SAXReader().read(request.getInputStream());
-        } catch (Exception e){
-            log.error(e.getMessage());
-        }
-
-        // 根节点
-        Element rootRecv = docRecv.getRootElement();
-
-        // 解析消息
-        String type = rootRecv.elementText("MsgType");
-        String from = rootRecv.elementText("FromUserName");
-        String to = rootRecv.elementText("ToUserName");
-        String text = rootRecv.element("Content").getText();
-
-        // 构建响应
-        Document docSend = docFactory.createDocument();
-        Element rootSend = docSend.addElement(new QName("xml"));
-
-        Element eleFromUserName = docFactory.createElement(new QName("FromUserName"));
-        eleFromUserName.addCDATA(to);
-        rootSend.add(eleFromUserName);
-
-        rootSend.addElement("ToUserName");
-        rootSend.element("ToUserName").addCDATA(from);
-
-        rootSend.addElement("CreateTime");
-        rootSend.element("CreateTime").setText(Integer.toString((int)System.currentTimeMillis()));
-
-        rootSend.addElement("MsgType");
-        rootSend.element("MsgType").addCDATA(type);
-
-        rootSend.addElement("Content");
-        rootSend.element("Content").addCDATA(text);
-
-        try {
-            // 输出消息
-            response.setCharacterEncoding("utf-8");
-            response.getWriter().write(docSend.asXML());
-        } catch (IOException ioe){
-            log.error(ioe.getMessage());
-        }
-    }*/
-
     /**
      * 消息处理
      * @param request
@@ -147,14 +94,13 @@ public class WechatController {
             String msgSend = null;
             try {
                 msgSend = dispatcher.excute(msgRecv).asXML();
-                System.out.println(msgSend);
+
+                // 消息输出
+                response.setCharacterEncoding("utf-8");
+                response.getWriter().write(msgSend);
             } catch (DocumentException dme){
                 log.error(dme.getMessage());
             }
-
-            // 消息输出
-            response.setCharacterEncoding("utf-8");
-            response.getWriter().write(msgSend);
         } else {
             log.error("fail to check check signature");
         }

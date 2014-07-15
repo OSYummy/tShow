@@ -4,6 +4,6 @@
     <title></title>
 </head>
 <body>
-<h2>${greet}</h2>
+<h2>${greet}<img src="../resources/images/home/panda.png"></h2>
 </body>
 </html>

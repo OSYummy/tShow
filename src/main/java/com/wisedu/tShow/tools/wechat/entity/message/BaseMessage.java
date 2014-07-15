@@ -1,5 +1,7 @@
 package com.wisedu.tShow.tools.wechat.entity.message;
 
+import com.wisedu.tShow.tools.wechat.utils.XStreamUtil;
+
 /**
  * Created with IntelliJ IDEA.
  * User: YUMMY
@@ -9,6 +11,6 @@ package com.wisedu.tShow.tools.wechat.entity.message;
  */
 public abstract class BaseMessage {
     public String asXML(){
-        return null;
+        return XStreamUtil.toXml(this);
     }
 }

@@ -1,6 +1,8 @@
 package com.wisedu.tShow.tools.wechat.entity.message.response;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.wisedu.tShow.tools.wechat.entity.message.BaseMessage;
+import com.wisedu.tShow.tools.wechat.utils.XStreamCDATA;
 
 /**
  * Created with IntelliJ IDEA.
@@ -9,10 +11,74 @@ import com.wisedu.tShow.tools.wechat.entity.message.BaseMessage;
  * Time: 下午4:58
  * To change this template use File | Settings | File Templates.
  */
+@XStreamAlias("xml")
 public class ResponseText extends BaseMessage {
+    // 开发者微信号
+    @XStreamCDATA
+    @XStreamAlias("ToUserName")
+    private String ToUserName;
+
+    // 发送方帐号
+    @XStreamCDATA
+    @XStreamAlias("FromUserName")
+    private String FromUserName;
+
+    // 消息创建时间
+    @XStreamAlias("CreateTime")
+    private Integer CreateTime;
+
+    // 消息类型
+    @XStreamCDATA
+    @XStreamAlias("MsgType")
+    private String MsgType;
+
+    // 文本消息内容
+    @XStreamCDATA
+    @XStreamAlias("Content")
     private String Content;
 
     public ResponseText() {
+
+    }
+
+    public ResponseText(String toUserName, String fromUserName, Integer createTime, String msgType, String content) {
+        ToUserName = toUserName;
+        FromUserName = fromUserName;
+        CreateTime = createTime;
+        MsgType = msgType;
+        Content = content;
+    }
+
+    public String getToUserName() {
+        return ToUserName;
+    }
+
+    public void setToUserName(String toUserName) {
+        ToUserName = toUserName;
+    }
+
+    public String getFromUserName() {
+        return FromUserName;
+    }
+
+    public void setFromUserName(String fromUserName) {
+        FromUserName = fromUserName;
+    }
+
+    public Integer getCreateTime() {
+        return CreateTime;
+    }
+
+    public void setCreateTime(Integer createTime) {
+        CreateTime = createTime;
+    }
+
+    public String getMsgType() {
+        return MsgType;
+    }
+
+    public void setMsgType(String msgType) {
+        MsgType = msgType;
     }
 
     public String getContent() {
@@ -21,10 +87,5 @@ public class ResponseText extends BaseMessage {
 
     public void setContent(String content) {
         Content = content;
-    }
-
-    @Override
-    public String asXML() {
-        return null;
     }
 }

@@ -2,6 +2,7 @@ package com.wisedu.tShow.tools.wechat.entity.message.request;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.wisedu.tShow.tools.wechat.entity.message.BaseMessage;
+import com.wisedu.tShow.tools.wechat.utils.XStreamCDATA;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,10 +14,12 @@ import com.wisedu.tShow.tools.wechat.entity.message.BaseMessage;
 @XStreamAlias("xml")
 public class RequestLocation extends BaseMessage{
     // 开发者微信号
+    @XStreamCDATA
     @XStreamAlias("ToUserName")
     private String ToUserName;
 
     // 发送方帐号
+    @XStreamCDATA
     @XStreamAlias("FromUserName")
     private String FromUserName;
 
@@ -25,6 +28,7 @@ public class RequestLocation extends BaseMessage{
     private Integer CreateTime;
 
     // 消息类型
+    @XStreamCDATA
     @XStreamAlias("MsgType")
     private String MsgType;
 
@@ -41,6 +45,7 @@ public class RequestLocation extends BaseMessage{
     private Integer Scale;
 
     // 地理位置信息
+    @XStreamCDATA
     @XStreamAlias("Label")
     private String Label;
 

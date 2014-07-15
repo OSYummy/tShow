@@ -1,6 +1,7 @@
 package com.wisedu.tShow.tools.wechat.entity.message.event;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.wisedu.tShow.tools.wechat.utils.XStreamCDATA;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,10 +13,12 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 @XStreamAlias("xml")
 public class RequestEventLocation extends BaseEvent{
     // 开发者微信号
+    @XStreamCDATA
     @XStreamAlias("ToUserName")
     private String ToUserName;
 
     // 发送方帐号
+    @XStreamCDATA
     @XStreamAlias("FromUserName")
     private String FromUserName;
 
@@ -24,10 +27,12 @@ public class RequestEventLocation extends BaseEvent{
     private Integer CreateTime;
 
     // 消息类型
+    @XStreamCDATA
     @XStreamAlias("MsgType")
     private String MsgType;
 
     // 事件类型，LOCATION
+    @XStreamCDATA
     @XStreamAlias("Event")
     private String Event;
 
