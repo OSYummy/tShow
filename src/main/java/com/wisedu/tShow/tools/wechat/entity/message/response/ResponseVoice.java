@@ -44,6 +44,14 @@ public class ResponseVoice extends BaseMessage {
 
     }
 
+    public ResponseVoice(String toUserName, String fromUserName, Integer createTime, String msgType, Voice voice) {
+        ToUserName = toUserName;
+        FromUserName = fromUserName;
+        CreateTime = createTime;
+        MsgType = msgType;
+        this.voice = voice;
+    }
+
     public String getToUserName() {
         return ToUserName;
     }

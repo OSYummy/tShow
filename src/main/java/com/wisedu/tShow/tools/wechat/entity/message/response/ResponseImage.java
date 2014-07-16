@@ -44,6 +44,14 @@ public class ResponseImage extends BaseMessage {
 
     }
 
+    public ResponseImage(String toUserName, String fromUserName, Integer createTime, String msgType, Image image) {
+        ToUserName = toUserName;
+        FromUserName = fromUserName;
+        CreateTime = createTime;
+        MsgType = msgType;
+        this.image = image;
+    }
+
     public String getToUserName() {
         return ToUserName;
     }

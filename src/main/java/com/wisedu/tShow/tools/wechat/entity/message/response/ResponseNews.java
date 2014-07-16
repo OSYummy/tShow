@@ -51,6 +51,15 @@ public class ResponseNews extends BaseMessage{
 
     }
 
+    public ResponseNews(String toUserName, String fromUserName, Integer createTime, String msgType, int articleCount, List<Article> articles) {
+        ToUserName = toUserName;
+        FromUserName = fromUserName;
+        CreateTime = createTime;
+        MsgType = msgType;
+        ArticleCount = articleCount;
+        Articles = articles;
+    }
+
     public String getToUserName() {
         return ToUserName;
     }

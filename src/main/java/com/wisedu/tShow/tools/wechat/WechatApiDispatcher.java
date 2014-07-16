@@ -6,6 +6,7 @@ import com.wisedu.tShow.tools.wechat.entity.message.event.*;
 import com.wisedu.tShow.tools.wechat.entity.message.request.*;
 import com.wisedu.tShow.tools.wechat.types.EventType;
 import com.wisedu.tShow.tools.wechat.types.RequestMsgType;
+import com.wisedu.tShow.tools.wechat.utils.EntityUtil;
 import com.wisedu.tShow.tools.wechat.utils.XStreamUtil;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -15,6 +16,7 @@ import org.dom4j.io.SAXReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.io.StringReader;
 
 /**
@@ -40,7 +42,7 @@ public class WechatApiDispatcher {
      * 处理消息
      * @param msg XML消息
      */
-    public BaseMessage excute(String msg) throws DocumentException{
+    public BaseMessage excute(String msg) throws DocumentException, IOException {
         // 根节点
         Document doc = new SAXReader().read(new StringReader(msg));
         Element root = doc.getRootElement();
@@ -112,7 +114,7 @@ public class WechatApiDispatcher {
         }
 
         // 填充消息
-        request = XStreamUtil.fromXml(doc.asXML(), request);
+        request = EntityUtil.fromXml(doc.asXML(), request);
 
         // 处理消息
         response = handlerManager.dispatch(request);

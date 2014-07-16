@@ -44,6 +44,14 @@ public class ResponseMusic extends BaseMessage{
 
     }
 
+    public ResponseMusic(String toUserName, String fromUserName, Integer createTime, String msgType, Music music) {
+        ToUserName = toUserName;
+        FromUserName = fromUserName;
+        CreateTime = createTime;
+        MsgType = msgType;
+        this.music = music;
+    }
+
     public String getToUserName() {
         return ToUserName;
     }

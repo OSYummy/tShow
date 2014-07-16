@@ -44,6 +44,14 @@ public class ResponseVideo extends BaseMessage {
 
     }
 
+    public ResponseVideo(String toUserName, String fromUserName, Integer createTime, String msgType, Video video) {
+        ToUserName = toUserName;
+        FromUserName = fromUserName;
+        CreateTime = createTime;
+        MsgType = msgType;
+        this.video = video;
+    }
+
     public String getToUserName() {
         return ToUserName;
     }

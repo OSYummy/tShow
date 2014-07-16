@@ -45,6 +45,14 @@ public class ResponseText extends BaseMessage {
 
     }
 
+    public ResponseText(String toUserName, String fromUserName, Integer createTime, String msgType, String content) {
+        ToUserName = toUserName;
+        FromUserName = fromUserName;
+        CreateTime = createTime;
+        MsgType = msgType;
+        Content = content;
+    }
+
     public String getToUserName() {
         return ToUserName;
     }
