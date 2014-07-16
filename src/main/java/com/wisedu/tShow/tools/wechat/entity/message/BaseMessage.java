@@ -1,6 +1,8 @@
 package com.wisedu.tShow.tools.wechat.entity.message;
 
-import com.wisedu.tShow.tools.wechat.utils.XStreamUtil;
+import com.wisedu.tShow.tools.wechat.utils.EntityUtil;
+
+import java.io.IOException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,7 +12,8 @@ import com.wisedu.tShow.tools.wechat.utils.XStreamUtil;
  * To change this template use File | Settings | File Templates.
  */
 public abstract class BaseMessage {
-    public String asXML(){
-        return XStreamUtil.toXml(this);
+    public String asXML() throws IOException{
+        /*return XStreamUtil.toXml(this);*/
+        return EntityUtil.asXml(this);
     }
 }

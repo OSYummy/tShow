@@ -1,8 +1,5 @@
 package com.wisedu.tShow.tools.wechat;
 
-import com.wisedu.tShow.tools.wechat.entity.message.response.Image;
-import com.wisedu.tShow.tools.wechat.entity.message.response.ResponseImage;
-import com.wisedu.tShow.tools.wechat.entity.message.response.ResponseText;
 import com.wisedu.tShow.tools.wechat.handler.HandlerManager;
 import com.wisedu.tShow.tools.wechat.entity.message.BaseMessage;
 import com.wisedu.tShow.tools.wechat.entity.message.event.*;

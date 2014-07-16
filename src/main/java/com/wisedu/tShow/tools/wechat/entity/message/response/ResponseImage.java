@@ -1,8 +1,10 @@
 package com.wisedu.tShow.tools.wechat.entity.message.response;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.wisedu.tShow.tools.wechat.entity.message.BaseMessage;
-import com.wisedu.tShow.tools.wechat.utils.XStreamCDATA;
+import com.wisedu.tShow.tools.wechat.utils.AdapterCDATA;
+
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,29 +13,75 @@ import com.wisedu.tShow.tools.wechat.utils.XStreamCDATA;
  * Time: 下午2:30
  * To change this template use File | Settings | File Templates.
  */
-@XStreamAlias("xml")
+@XmlRootElement(name = "xml")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(propOrder = {"ToUserName", "FromUserName", "CreateTime", "MsgType", "image"})
 public class ResponseImage extends BaseMessage {
     // 开发者微信号
-    @XStreamCDATA
-    @XStreamAlias("ToUserName")
+    @XmlElement(name = "ToUserName", required = true)
+    @XmlJavaTypeAdapter(AdapterCDATA.class)
     private String ToUserName;
 
     // 发送方帐号
-    @XStreamCDATA
-    @XStreamAlias("FromUserName")
+    @XmlElement(name = "FromUserName", required = true)
+    @XmlJavaTypeAdapter(AdapterCDATA.class)
     private String FromUserName;
 
     // 消息创建时间
-    @XStreamAlias("CreateTime")
+    @XmlElement(name = "CreateTime", required = true)
     private Integer CreateTime;
 
-    // 消息类型
-    @XStreamCDATA
-    @XStreamAlias("MsgType")
+    // 消息类型,image
+    @XmlElement(name = "MsgType", required = true)
+    @XmlJavaTypeAdapter(AdapterCDATA.class)
     private String MsgType;
+
+    // 图像消息
+    @XmlElement(name = "Image", required = true)
+    private Image image;
 
     public ResponseImage() {
 
+    }
+
+    public String getToUserName() {
+        return ToUserName;
+    }
+
+    public void setToUserName(String toUserName) {
+        ToUserName = toUserName;
+    }
+
+    public String getFromUserName() {
+        return FromUserName;
+    }
+
+    public void setFromUserName(String fromUserName) {
+        FromUserName = fromUserName;
+    }
+
+    public Integer getCreateTime() {
+        return CreateTime;
+    }
+
+    public void setCreateTime(Integer createTime) {
+        CreateTime = createTime;
+    }
+
+    public String getMsgType() {
+        return MsgType;
+    }
+
+    public void setMsgType(String msgType) {
+        MsgType = msgType;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
     }
 }
 

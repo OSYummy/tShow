@@ -1,8 +1,10 @@
 package com.wisedu.tShow.tools.wechat.entity.message.response;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.wisedu.tShow.tools.wechat.entity.message.BaseMessage;
-import com.wisedu.tShow.tools.wechat.utils.XStreamCDATA;
+import com.wisedu.tShow.tools.wechat.utils.AdapterCDATA;
+
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,42 +13,36 @@ import com.wisedu.tShow.tools.wechat.utils.XStreamCDATA;
  * Time: 下午4:58
  * To change this template use File | Settings | File Templates.
  */
-@XStreamAlias("xml")
+@XmlRootElement(name = "xml")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(propOrder = {"ToUserName", "FromUserName", "CreateTime", "MsgType", "Content"})
 public class ResponseText extends BaseMessage {
     // 开发者微信号
-    @XStreamCDATA
-    @XStreamAlias("ToUserName")
+    @XmlElement(name = "ToUserName", required = true)
+    @XmlJavaTypeAdapter(AdapterCDATA.class)
     private String ToUserName;
 
     // 发送方帐号
-    @XStreamCDATA
-    @XStreamAlias("FromUserName")
+    @XmlElement(name = "FromUserName", required = true)
+    @XmlJavaTypeAdapter(AdapterCDATA.class)
     private String FromUserName;
 
     // 消息创建时间
-    @XStreamAlias("CreateTime")
+    @XmlElement(name = "CreateTime", required = true)
     private Integer CreateTime;
 
-    // 消息类型
-    @XStreamCDATA
-    @XStreamAlias("MsgType")
+    // 消息类型,text
+    @XmlElement(name = "MsgType", required = true)
+    @XmlJavaTypeAdapter(AdapterCDATA.class)
     private String MsgType;
 
     // 文本消息内容
-    @XStreamCDATA
-    @XStreamAlias("Content")
+    @XmlElement(name = "Content", required = true)
+    @XmlJavaTypeAdapter(AdapterCDATA.class)
     private String Content;
 
     public ResponseText() {
 
-    }
-
-    public ResponseText(String toUserName, String fromUserName, Integer createTime, String msgType, String content) {
-        ToUserName = toUserName;
-        FromUserName = fromUserName;
-        CreateTime = createTime;
-        MsgType = msgType;
-        Content = content;
     }
 
     public String getToUserName() {
