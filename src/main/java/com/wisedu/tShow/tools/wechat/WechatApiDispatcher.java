@@ -7,7 +7,6 @@ import com.wisedu.tShow.tools.wechat.entity.message.request.*;
 import com.wisedu.tShow.tools.wechat.types.EventType;
 import com.wisedu.tShow.tools.wechat.types.RequestMsgType;
 import com.wisedu.tShow.tools.wechat.utils.EntityUtil;
-import com.wisedu.tShow.tools.wechat.utils.XStreamUtil;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentFactory;

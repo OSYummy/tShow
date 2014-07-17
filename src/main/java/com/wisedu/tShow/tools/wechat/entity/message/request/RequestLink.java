@@ -1,9 +1,7 @@
 package com.wisedu.tShow.tools.wechat.entity.message.request;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.wisedu.tShow.tools.wechat.entity.message.BaseMessage;
 import com.wisedu.tShow.tools.wechat.utils.AdapterCDATA;
-import com.wisedu.tShow.tools.wechat.utils.XStreamCDATA;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;

@@ -26,4 +26,14 @@ public class PropertyConfigurerUtil extends PropertyPlaceholderConfigurer {
     public static Object getProperty(String key){
         return ctxProperties.get(key);
     }
+
+    public static String getProperty(String key, String dft){
+        Object value = getProperty(key);
+        return (value!=null)? (String)value: dft;
+    }
+
+    public static Boolean getProperty(String key, Boolean dft){
+        Object value = getProperty(key);
+        return (value!=null)? (Boolean)value: dft;
+    }
 }

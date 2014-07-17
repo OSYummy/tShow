@@ -7,6 +7,7 @@
         <property name="ignoreResourceNotFound" value="true" />
         <property name="locations">
             <list>
+                <value>/WEB-INF/properties/mail.properties</value>
                 <value>/WEB-INF/properties/app.properties</value>
                 <value>/WEB-INF/properties/webservice.properties</value>
             </list>

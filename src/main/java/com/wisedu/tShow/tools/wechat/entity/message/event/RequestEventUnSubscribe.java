@@ -1,7 +1,9 @@
 package com.wisedu.tShow.tools.wechat.entity.message.event;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.wisedu.tShow.tools.wechat.utils.XStreamCDATA;
+import com.wisedu.tShow.tools.wechat.utils.AdapterCDATA;
+
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,33 +12,83 @@ import com.wisedu.tShow.tools.wechat.utils.XStreamCDATA;
  * Time: 下午5:08
  * To change this template use File | Settings | File Templates.
  */
-@XStreamAlias("xml")
+@XmlRootElement(name = "xml")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(propOrder = {"ToUserName", "FromUserName", "CreateTime", "MsgType", "Event"})
 public class RequestEventUnSubscribe extends BaseEvent {
     // 开发者微信号
-    @XStreamCDATA
-    @XStreamAlias("ToUserName")
+    @XmlElement(name = "ToUserName", required = true)
+    @XmlJavaTypeAdapter(AdapterCDATA.class)
     private String ToUserName;
 
     // 发送方帐号
-    @XStreamCDATA
-    @XStreamAlias("FromUserName")
+    @XmlElement(name = "FromUserName", required = true)
+    @XmlJavaTypeAdapter(AdapterCDATA.class)
     private String FromUserName;
 
     // 消息创建时间
-    @XStreamAlias("CreateTime")
+    @XmlElement(name = "CreateTime", required = true)
     private Integer CreateTime;
 
     // 消息类型
-    @XStreamCDATA
-    @XStreamAlias("MsgType")
+    @XmlElement(name = "MsgType", required = true)
+    @XmlJavaTypeAdapter(AdapterCDATA.class)
     private String MsgType;
 
     // 事件类型，subscribe(订阅)、unsubscribe(取消订阅)
-    @XStreamCDATA
-    @XStreamAlias("Event")
+    @XmlElement(name = "Event", required = true)
+    @XmlJavaTypeAdapter(AdapterCDATA.class)
     private String Event;
 
     public RequestEventUnSubscribe() {
 
+    }
+
+    public RequestEventUnSubscribe(String toUserName, String fromUserName, Integer createTime, String msgType, String event) {
+        ToUserName = toUserName;
+        FromUserName = fromUserName;
+        CreateTime = createTime;
+        MsgType = msgType;
+        Event = event;
+    }
+
+    public String getToUserName() {
+        return ToUserName;
+    }
+
+    public void setToUserName(String toUserName) {
+        ToUserName = toUserName;
+    }
+
+    public String getFromUserName() {
+        return FromUserName;
+    }
+
+    public void setFromUserName(String fromUserName) {
+        FromUserName = fromUserName;
+    }
+
+    public Integer getCreateTime() {
+        return CreateTime;
+    }
+
+    public void setCreateTime(Integer createTime) {
+        CreateTime = createTime;
+    }
+
+    public String getMsgType() {
+        return MsgType;
+    }
+
+    public void setMsgType(String msgType) {
+        MsgType = msgType;
+    }
+
+    public String getEvent() {
+        return Event;
+    }
+
+    public void setEvent(String event) {
+        Event = event;
     }
 }

@@ -13,7 +13,6 @@ import java.io.IOException;
  */
 public abstract class BaseMessage {
     public String asXML() throws IOException{
-        /*return XStreamUtil.toXml(this);*/
         return EntityUtil.asXml(this);
     }
 }
