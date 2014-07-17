@@ -30,35 +30,28 @@ public class Dictionary {
     }
 
     public void insert(Node node, String word){
-        /*char c = word.charAt(0);
-        if (node == null){
-            node = new Node(c);
-        }
-
-        int index = 0;
-        Node current = node;
-        while (true){
-            int cmp=word.charAt(index)-current.splitchar;
-            if (cmp > 0){
-                current = current.hikid;
-            } else if (cmp == 0){
-
-            } else {
-                current = current.lokid;
-            }
-        }*/
         int index = 0;
         Node current = node;
         while (index < word.length()){
             char c = word.charAt(index);
             int cmp = c - current.splitchar;
             if (cmp > 0){
-                index++;
+                if (current.hikid==null){
+                    index++;
+                    current.hikid = new Node(c);
+                }
                 current = current.hikid;
             } else if (cmp == 0){
-
-            } else {
                 index++;
+                if (current.eqkid==null){
+                    current.eqkid = new Node(c);
+                }
+                current = current.eqkid;
+            } else {
+                if (current.lokid==null){
+                    index++;
+                    current.lokid = new Node(c);
+                }
                 current = current.lokid;
             }
         }
