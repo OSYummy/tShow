@@ -1,5 +1,7 @@
 package com.wisedu.tShow.tools.search.TSAnalyzer.dic;
 
+import java.io.File;
+
 /**
  * Created with IntelliJ IDEA.
  * User: YUMMY
@@ -8,4 +10,9 @@ package com.wisedu.tShow.tools.search.TSAnalyzer.dic;
  * To change this template use File | Settings | File Templates.
  */
 public class Dictionary {
+    private TSTrie _dic;
+
+    public void load(File file){
+
+    }
 }
