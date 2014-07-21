@@ -1,6 +1,5 @@
 package com.wisedu.tShow.tools.search.TSAnalyzer.dic;
 
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,16 +83,19 @@ public class TSTrie {
         }
     }
 
-    public List<Term> match(String word){
-        return match(root, word);
+    public List<Term> match(String word, int offset){
+        return match(root, word, offset);
     }
 
-    public List<Term> match(Node node, String word){
+    public List<Term> match(Node node, String word, int offset){
         List<Term> terms = new ArrayList<Term>();
 
-        int offset = 0;
         Node current = node;
-        while (offset < word.length()){
+        while (true){
+            if (current==null
+                    || offset==word.length()){
+                break;
+            }
             char c = word.charAt(offset);
             int cmp = c - current.splitchar;
             if (cmp > 0){

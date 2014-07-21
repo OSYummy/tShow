@@ -13,6 +13,5 @@ public class Dictionary {
     private TSTrie _dic;
 
     public void load(File file){
-
     }
 }
