@@ -1,82 +1,280 @@
 (function() {
     if (!window.WL) {
-        var Wg = "download", h = "interface_method", He = "WL.Internal.jsonp.", Cd = 2000, ee = "body", r = "callback", Tb = "code", bb = "element", ae = "error", sh = "error_description", Md = "logging", yh = "tracing", Mb = "message", R = "method", cg = "file_input", qh = "stream_input", Kb = "file_name", th = "file_output", L = "overwrite", z = "path", Ag = "pretty", Bg = "result", Ah = "status", Kf = "return_ssl_resources", wh = "success", Bh = "error", pd = "suppress_redirects", Xc = "suppress_response_codes", O = "x_http_live_library", be = 0, qd = 1, d = "access_token", Yg = "appstate", Yb = "authentication_token", q = "client_id", dc = "display", hh = "code", l = "error", E = "error_description", fb = "expires", eb = "expires_in", ch = "locale", x = "redirect_uri", kb = "response_type", s = "request_ts", he = "resource_id", f = "scope", we = "session", Pb = "secure_cookie", V = "state", e = "status", Sb = [d, Yb, f, eb, fb], F = "connected", Fg = "notConnected", T = "unchecked", wb = "unknown", cc = "expiring", Gh = "expired", Eh = "live-sdk-upload", zh = "live-sdk-download", gh = "appId", Tg = "channelUrl", ue = "wl_auth", je = "wl_upload", ne = "page", Ic = "touch", ac = "none", Vd = "none", Qb = "auth.login", Ac = "auth.logout", X = "auth.sessionChange", nc = "auth.statusChange", ze = "wl.log", Hb = "access_denied", uf = "connection_failed", kg = "invalid_cookie", Lf = "invalid_request", lb = "request_canceled", K = "request_failed", Ub = "timed_out", xh = "unknown_user", vh = "user_canceled", kf = "METHOD: Failed to get the required user permission to perform this operation.", lf = "The request could not be completed due to browser issues.", id = "The request could not be completed due to browser limitations.", Nb = "METHOD: The operation has been canceled.", ed = "The 'wl_auth' cookie is not valid.", Zc = "The 'wl_auth' cookie has been modified incorrectly. Ensure that the redirect URI only modifies sub-keys for values received from the OAuth endpoint.", Le = "The 'wl_auth' cookie has multiple values. Ensure that the redirect URI specifies a cookie domain and path when setting cookies.", Cf = "METHOD: The input property 'PARAM' does not reference a valid DOM element.", Sf = "METHOD: An exception was received for EVENT. Detail: MESSAGE", Df = "METHOD: The WL object must be initialized with WL.init() prior to invoking this method.", md = "A connection to the server could not be established.", oh = "The user could not be identified.", vf = "The pending login request has been canceled.", Pe = "Logging out the user is not supported in current session because the user is logged in with a Microsoft account on this computer. To logout, the user may quit the app or log out from the computer.", jd = "METHOD: The input value for parameter/property 'PARAM' is not valid.", mf = "METHOD: The input parameter/property 'PARAM' must be included.", Re = "METHOD: The type of the provided value for the input parameter/property 'PARAM' is not valid.", gc = "METHOD: There is a pending METHOD request, the current call will be ignored.", Je = gc.replace(/METHOD/g, "WL.login"), Ee = gc.replace(/METHOD/g, "WL.fileDialog"), mh = gc.replace(/METHOD/g, "WL.upload"), Qe = "METHOD: The input property 'redirect_uri' is required if the value of the 'response_type' property is 'code'.", lh = "WL.init: The redirect_uri value should be the same as the value of 'Redirect Domain' of your registered app. It must begin with 'http://' or 'https://'.", nh = "METHOD: The api call is not supported on this platform.", kh = "WL.init: The response_type value 'code' is not supported on this platform.", lg = "METHOD: The input property 'redirect_uri' must use https: to match the scheme of the current page.", nf = "The auth request is timed out.", Ef = "The popup is closed without receiving consent.", Bc = 0, ef = 1, kd = 2, mg = 3, Rb = "GET", Xd = "POST", Kg = "PUT", og = "DELETE", Ch = "COPY", Dh = "MOVE", yf = 30000, jh = "METHOD", o = "onSuccess", p = "onError", I = "onProgress", Zb = "redirect_type", Kd = "auth", yd = "upload", pg = "code", hb = "token", bc = "https:", Nc = "http:", pe = "wl.signin", Qg = "wl.skydrive", Pf = "wl.skydrive_update", xg = /\s|,/, qb = "boolean", Rc = "dom", j = "function", ve = "number", b = "string", vb = "object", zc = "string_or_array", Vb = "undefined", Vg = "name", cb = "element", Wb = "brand", Lc = "type", Db = "sign_in_text", Bb = "sign_out_text", D = "theme", Fd = "onloggedin", Ad = "onloggedout", mb = "onerror", qg = "messenger", Eg = "hotmail", yg = "skydrive", Cc = "windows", zd = "windowslive", Kc = "none", Pc = "signin", qc = Pc, Bd = "login", ud = "connect", xd = "custom", Fb = "blue", Eb = "white", uh = "dark", rh = "light", de = "id", db = "auth_server", Q = "apiservice_uri", S = "skydrive_uri", G = "sdk_root", ec = "wl_trace";
-        window.WL = {getSession: function() {
-            try {
-                return a.getSession()
-            } catch (b) {
-                t(b.message)
+        var Wg = "download"
+            , h = "interface_method"
+            , He = "WL.Internal.jsonp."
+            , Cd = 2000
+            , ee = "body"
+            , r = "callback"
+            , Tb = "code"
+            , bb = "element"
+            , ae = "error"
+            , sh = "error_description"
+            , Md = "logging"
+            , yh = "tracing"
+            , Mb = "message"
+            , R = "method"
+            , cg = "file_input"
+            , qh = "stream_input"
+            , Kb = "file_name"
+            , th = "file_output"
+            , L = "overwrite"
+            , z = "path"
+            , Ag = "pretty"
+            , Bg = "result"
+            , Ah = "status"
+            , Kf = "return_ssl_resources"
+            , wh = "success"
+            , Bh = "error"
+            , pd = "suppress_redirects"
+            , Xc = "suppress_response_codes"
+            , O = "x_http_live_library"
+            , be = 0
+            , qd = 1
+            , d = "access_token"
+            , Yg = "appstate"
+            , Yb = "authentication_token"
+            , q = "client_id"
+            , dc = "display"
+            , hh = "code"
+            , l = "error"
+            , E = "error_description"
+            , fb = "expires"
+            , eb = "expires_in"
+            , ch = "locale"
+            , x = "redirect_uri"
+            , kb = "response_type"
+            , s = "request_ts"
+            , he = "resource_id"
+            , f = "scope"
+            , we = "session"
+            , Pb = "secure_cookie"
+            , V = "state"
+            , e = "status"
+            , Sb = [d, Yb, f, eb, fb]
+            , F = "connected"
+            , Fg = "notConnected"
+            , T = "unchecked"
+            , wb = "unknown"
+            , cc = "expiring"
+            , Gh = "expired"
+            , Eh = "live-sdk-upload"
+            , zh = "live-sdk-download"
+            , gh = "appId"
+            , Tg = "channelUrl"
+            , ue = "wl_auth"
+            , je = "wl_upload"
+            , ne = "page"
+            , Ic = "touch"
+            , ac = "none"
+            , Vd = "none"
+            , Qb = "auth.login"
+            , Ac = "auth.logout"
+            , X = "auth.sessionChange"
+            , nc = "auth.statusChange"
+            , ze = "wl.log"
+            , Hb = "access_denied"
+            , uf = "connection_failed"
+            , kg = "invalid_cookie"
+            , Lf = "invalid_request"
+            , lb = "request_canceled"
+            , K = "request_failed"
+            , Ub = "timed_out"
+            , xh = "unknown_user"
+            , vh = "user_canceled"
+            , kf = "METHOD: Failed to get the required user permission to perform this operation."
+            , lf = "The request could not be completed due to browser issues."
+            , id = "The request could not be completed due to browser limitations."
+            , Nb = "METHOD: The operation has been canceled."
+            , ed = "The 'wl_auth' cookie is not valid."
+            , Zc = "The 'wl_auth' cookie has been modified incorrectly. Ensure that the redirect URI only modifies sub-keys for values received from the OAuth endpoint."
+            , Le = "The 'wl_auth' cookie has multiple values. Ensure that the redirect URI specifies a cookie domain and path when setting cookies."
+            , Cf = "METHOD: The input property 'PARAM' does not reference a valid DOM element."
+            , Sf = "METHOD: An exception was received for EVENT. Detail: MESSAGE"
+            , Df = "METHOD: The WL object must be initialized with WL.init() prior to invoking this method."
+            , md = "A connection to the server could not be established."
+            , oh = "The user could not be identified."
+            , vf = "The pending login request has been canceled."
+            , Pe = "Logging out the user is not supported in current session because the user is logged in with a Microsoft account on this computer. To logout, the user may quit the app or log out from the computer."
+            , jd = "METHOD: The input value for parameter/property 'PARAM' is not valid."
+            , mf = "METHOD: The input parameter/property 'PARAM' must be included."
+            , Re = "METHOD: The type of the provided value for the input parameter/property 'PARAM' is not valid."
+            , gc = "METHOD: There is a pending METHOD request, the current call will be ignored."
+            , Je = gc.replace(/METHOD/g, "WL.login")
+            , Ee = gc.replace(/METHOD/g, "WL.fileDialog")
+            , mh = gc.replace(/METHOD/g, "WL.upload")
+            , Qe = "METHOD: The input property 'redirect_uri' is required if the value of the 'response_type' property is 'code'."
+            , lh = "WL.init: The redirect_uri value should be the same as the value of 'Redirect Domain' of your registered app. It must begin with 'http://' or 'https://'."
+            , nh = "METHOD: The api call is not supported on this platform."
+            , kh = "WL.init: The response_type value 'code' is not supported on this platform."
+            , lg = "METHOD: The input property 'redirect_uri' must use https: to match the scheme of the current page."
+            , nf = "The auth request is timed out.", Ef = "The popup is closed without receiving consent."
+            , Bc = 0
+            , ef = 1
+            , kd = 2
+            , mg = 3
+            , Rb = "GET"
+            , Xd = "POST"
+            , Kg = "PUT"
+            , og = "DELETE"
+            , Ch = "COPY"
+            , Dh = "MOVE"
+            , yf = 30000
+            , jh = "METHOD"
+            , o = "onSuccess"
+            , p = "onError"
+            , I = "onProgress"
+            , Zb = "redirect_type"
+            , Kd = "auth"
+            , yd = "upload"
+            , pg = "code"
+            , hb = "token"
+            , bc = "https:"
+            , Nc = "http:"
+            , pe = "wl.signin"
+            , Qg = "wl.skydrive"
+            , Pf = "wl.skydrive_update"
+            , xg = /\s|,/
+            , qb = "boolean"
+            , Rc = "dom"
+            , j = "function"
+            , ve = "number"
+            , b = "string"
+            , vb = "object"
+            , zc = "string_or_array"
+            , Vb = "undefined"
+            , Vg = "name"
+            , cb = "element"
+            , Wb = "brand"
+            , Lc = "type"
+            , Db = "sign_in_text"
+            , Bb = "sign_out_text"
+            , D = "theme"
+            , Fd = "onloggedin"
+            , Ad = "onloggedout"
+            , mb = "onerror"
+            , qg = "messenger"
+            , Eg = "hotmail"
+            , yg = "skydrive"
+            , Cc = "windows"
+            , zd = "windowslive"
+            , Kc = "none"
+            , Pc = "signin"
+            , qc = Pc
+            , Bd = "login"
+            , ud = "connect"
+            , xd = "custom"
+            , Fb = "blue"
+            , Eb = "white"
+            , uh = "dark"
+            , rh = "light"
+            , de = "id"
+            , db = "auth_server"
+            , Q = "apiservice_uri"
+            , S = "skydrive_uri"
+            , G = "sdk_root"
+            , ec = "wl_trace";
+
+        window.WL = {
+            getSession: function() {
+                try {
+                    return a.getSession()
+                } catch (b) {
+                    t(b.message)
+                }
             }
-        },getLoginStatus: function() {
-            try {
-                return a.getLoginStatus({callback: Id(arguments, j, 2),internal: false}, Id(arguments, qb, 2))
-            } catch (d) {
-                return J("WL.getLoginStatus", d)
+            ,getLoginStatus: function() {
+                try {
+                    return a.getLoginStatus({callback: Id(arguments, j, 2),internal: false}, Id(arguments, qb, 2))
+                } catch (d) {
+                    return J("WL.getLoginStatus", d)
+                }
             }
-        },logout: function(b) {
-            try {
-                Xb(b, N, "WL.logout");
-                return a.logout({callback: b})
-            } catch (c) {
-                return J("WL.logout", c)
+            ,logout: function(b) {
+                try {
+                    Xb(b, N, "WL.logout");
+                    return a.logout({callback: b})
+                } catch (c) {
+                    return J("WL.logout", c)
+                }
             }
-        },canLogout: function() {
-            return a.canLogout()
-        },api: function() {
-            try {
-                var c = Nf(arguments);
-                n(c, [{name: z,type: b,optional: false}, {name: R,type: b,optional: true}, N], "WL.api");
-                return a.api(c)
-            } catch (f) {
-                return J("WL.api", f)
+            ,canLogout: function() {
+                return a.canLogout()
+            },
+            api: function() {
+                try {
+                    var c = Nf(arguments);
+                    n(c, [{name: z,type: b,optional: false}, {name: R,type: b,optional: true}, N], "WL.api");
+                    return a.api(c)
+                } catch (f) {
+                    return J("WL.api", f)
+                }
             }
-        }};
+        };
+
         var ie = [Qb, Ac, X, nc, ze];
-        WL.Event = {subscribe: function(d, a) {
-            try {
-                Xb([d, a], [{name: "event",type: b,allowedValues: ie,caseSensitive: true,optional: false}, bf], "WL.Event.subscribe");
-                c.subscribe(d, a)
-            } catch (e) {
-                t(e.message)
+
+        WL.Event = {
+            subscribe: function(d, a) {
+                try {
+                    Xb([d, a], [{name: "event",type: b,allowedValues: ie,caseSensitive: true,optional: false}, bf], "WL.Event.subscribe");
+                    c.subscribe(d, a)
+                } catch (e) {
+                    t(e.message)
+                }
             }
-        },unsubscribe: function(d, a) {
-            try {
-                Xb([d, a], [{name: "event",type: b,allowedValues: ie,caseSensitive: true,optional: false}, N], "WL.Event.unsubscribe");
-                c.unsubscribe(d, a)
-            } catch (e) {
-                t(e.message)
+            ,unsubscribe: function(d, a) {
+                try {
+                    Xb([d, a], [{name: "event",type: b,allowedValues: ie,caseSensitive: true,optional: false}, N], "WL.Event.unsubscribe");
+                    c.unsubscribe(d, a)
+                } catch (e) {
+                    t(e.message)
+                }
             }
-        }};
+        };
+
         WL.Internal = {};
-        var c = {subscribe: function(a, b) {
-            i("Subscribe " + a);
-            var d = c.getHandlers(a);
-            d.push(b)
-        },unsubscribe: function(d, f) {
-            i("Unsubscribe " + d);
-            var b = c.getHandlers(d), e = [];
-            if (f != null) {
-                var g = false;
-                for (var a = 0; a < b.length; a++)
-                    if (g || b[a] != f)
-                        e.push(b[a]);
-                    else
-                        g = true
+
+        var c = {
+                subscribe: function(a, b) {
+                    i("Subscribe " + a);
+                    var d = c.getHandlers(a);
+                    d.push(b)
+                }
+                ,unsubscribe: function(d, f) {
+                    i("Unsubscribe " + d);
+                    var b = c.getHandlers(d), e = [];
+                    if (f != null) {
+                        var g = false;
+                        for (var a = 0; a < b.length; a++)
+                            if (g || b[a] != f)
+                                e.push(b[a]);
+                            else
+                                g = true
+                    }
+                    c._eHandlers[d] = e
+                }
+                ,getHandlers: function(b) {
+                    if (!c._eHandlers)
+                        c._eHandlers = {};
+                    var a = c._eHandlers[b];
+                    if (a == null)
+                        c._eHandlers[b] = a = [];
+                    return a
+                }
+                ,notify: function(d, e) {
+                    i("Notify " + d);
+                    var b = c.getHandlers(d);
+                    for (var a = 0; a < b.length; a++)
+                        b[a](e)
+                }
             }
-            c._eHandlers[d] = e
-        },getHandlers: function(b) {
-            if (!c._eHandlers)
-                c._eHandlers = {};
-            var a = c._eHandlers[b];
-            if (a == null)
-                c._eHandlers[b] = a = [];
-            return a
-        },notify: function(d, e) {
-            i("Notify " + d);
-            var b = c.getHandlers(d);
-            for (var a = 0; a < b.length; a++)
-                b[a](e)
-        }}, a = {_status: be,_statusRequests: [],_rpsAuth: false};
+            , a = {
+                _status: be,
+                _statusRequests: [],
+                _rpsAuth: false
+            };
+
         a.appInit = function(c) {
             if (a._status == qd) {
                 var e = a._session.getNormalStatus();
@@ -96,17 +294,21 @@
             a._status = qd;
             return rf(c)
         };
+
         a.onloadInit = function() {
             Ng();
             Pg()
         };
+
         function y(b) {
             if (a._status === be)
                 throw new Error(Df.replace("METHOD", b))
         }
+
         function Oc() {
             return WL.Internal.tApp || a
         }
+
         a.api = function(a) {
             y("WL.api");
             var c = a[ee];
@@ -118,37 +320,44 @@
             a[R] = (b != null ? U(b) : Rb).toUpperCase();
             return (new xe(a)).execute()
         };
+
         var Uf = function() {
-            var b = a.api.lastId, c;
-            b = b === undefined ? 1 : b + 1;
-            c = "WLAPI_REQ_" + b + "_" + (new Date).getTime();
-            a.api.lastId = b;
-            return c
-        }, xe = function(b) {
-            var c = this;
-            c._properties = b;
-            c._completed = false;
-            c._id = Uf();
-            b[Ag] = false;
-            b[Kf] = a._isHttps;
-            b[O] = a[O];
-            var d = b[z];
-            c._url = Wd() + (d.charAt(0) === "/" ? d.substring(1) : d);
-            c._promise = new m("WL.api", null, null)
+                var b = a.api.lastId, c;
+                b = b === undefined ? 1 : b + 1;
+                c = "WLAPI_REQ_" + b + "_" + (new Date).getTime();
+                a.api.lastId = b;
+                return c
+            }
+            , xe = function(b) {
+                var c = this;
+                c._properties = b;
+                c._completed = false;
+                c._id = Uf();
+                b[Ag] = false;
+                b[Kf] = a._isHttps;
+                b[O] = a[O];
+                var d = b[z];
+                c._url = Wd() + (d.charAt(0) === "/" ? d.substring(1) : d);
+                c._promise = new m("WL.api", null, null)
+            };
+
+        xe.prototype = {
+            execute: function() {
+                ug(this);
+                return this._promise
+            }
+            ,onCompleted: function(a) {
+                if (this._completed)
+                    return;
+                this._completed = true;
+                C(this._properties.callback, a, true);
+                if (a[l])
+                    this._promise[p](a);
+                else
+                    this._promise[o](a)
+            }
         };
-        xe.prototype = {execute: function() {
-            ug(this);
-            return this._promise
-        },onCompleted: function(a) {
-            if (this._completed)
-                return;
-            this._completed = true;
-            C(this._properties.callback, a, true);
-            if (a[l])
-                this._promise[p](a);
-            else
-                this._promise[o](a)
-        }};
+
         function yc(e, c, a, d) {
             a = a ? U(a) : "";
             var b = a !== "" ? Dc(a) : null;
@@ -159,12 +368,14 @@
             }
             e.onCompleted(b)
         }
+
         function rg(c, b) {
             var a = {};
             a[Tb] = K;
             a[Mb] = b || md;
             return a
         }
+
         function rc() {
             var c = null;
             if (!a._rpsAuth) {
@@ -174,6 +385,7 @@
             }
             return c
         }
+
         function Gc(i) {
             var c = {};
             for (var b in i) {
@@ -197,6 +409,7 @@
             }
             return c
         }
+
         function Zf(c) {
             if (!fh())
                 return false;
@@ -212,6 +425,7 @@
             a.send(b.body);
             return true
         }
+
         function Sd(e) {
             var a = Od(e._properties, null, [r, z, R]), f = e._properties[R], g = gb(e._url, {"ts": (new Date).getTime()}), h = rc(), c, b;
             a[pd] = "true";
@@ -229,11 +443,13 @@
             g += "&method=" + f;
             return {url: g,method: b,body: c}
         }
+
         a.download = function(a) {
             Ze(a);
             y("WL.download");
             return (new Pd(a)).execute()
         };
+
         function rd(b, f) {
             var c = f || {}, g = Wd();
             if (!ke(b))
@@ -244,11 +460,13 @@
             c[O] = a[O];
             return gb(b, c)
         }
+
         var Yc = "notStarted", sd = "ready", fc = "downloadCompleted", Tc = "downloadFailed", dd = "canceled", Ye = "completed";
         function Pd(a) {
             this._properties = a;
             this._status = Yc
         }
+
         Pd.prototype = {execute: function() {
             this._promise = new m("WL.download", this, null);
             this._process();
@@ -567,6 +785,7 @@
         function Ed(a) {
             return a == null || a === ""
         }
+
         function M(b, d) {
             var c = d || {};
             if (b != null)
@@ -574,6 +793,7 @@
                     c[a] = b[a];
             return c
         }
+
         function Od(e, d, b) {
             var c = M(e, d);
             for (var a = 0; a < b.length; a++)
@@ -2975,39 +3195,55 @@
             if (b[Jb])
                 a[Jb] = b[Jb]
         };
+
         var pb = {};
         pb[db] = "login.live.com";
         pb[Q] = "https://apis.live.net/v5.0/";
         pb[S] = "https://onedrive.live.com/";
         pb[G] = "//js.live.net/v5.0/";
+
         var xb = {};
         xb[db] = "login.live.com";
         xb[Q] = "https://df.apis.live.net/v5.0/";
         xb[S] = "https://onedrive.live.com/";
         xb[G] = "//df-js.live.net/v5.0/";
+
         var ub = {};
         ub[db] = "login.live-int.com";
         ub[Q] = "https://apis.live-int.net/v5.0/";
         ub[S] = "https://onedrive.live-int.com/";
         ub[G] = "//js.live-int.net/v5.0/";
+
         var nb = {};
         nb[db] = "login.live-int.com";
         nb[Q] = "https://current.apis.live-tst.net/v5.0/";
         nb[S] = "https://onedrive.live-int.com/";
         nb[G] = "//current-js.live-int.net/v5.0/";
+
         var rb = {};
         rb[db] = "login.live-int.com";
         rb[Q] = "https://bvt.apis.live-tst.net/v5.0/";
         rb[S] = "https://onedrive-bvt.live-int.com/";
         rb[G] = "//bvt-js.live-int.net/v5.0/";
-        a._settings = {PROD: pb,DF: xb,INT: ub,CURRENT: nb,BVT: rb,init: function(b) {
-            b = b.toUpperCase();
-            var c = this[b];
-            if (c)
-                M(c, a)
-        }};
+
+        a._settings = {
+            PROD: pb,
+            DF: xb,
+            INT: ub,
+            CURRENT: nb,
+            BVT: rb,
+            init: function(b) {
+                b = b.toUpperCase();
+                var c = this[b];
+                if (c)
+                    M(c, a)
+            }
+        };
+
         a._settings.init("PROD");
+
         a[Vc] = "wl.skydrivepicker.js";
+
         a.onloadInit()
     }
 })();
