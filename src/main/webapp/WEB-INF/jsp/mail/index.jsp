@@ -3,50 +3,34 @@
 <html>
 <head>
     <title>Client-Side JavaScript Code Sample</title>
-    <script src="http://outlook.ngrok.com/tShow/resources/js/mail/wl.js"></script>
+    <script type="text/javascript" src="/tShow/resources/js/mail/wl.js"></script>
+    <script type="text/javascript" src="/tShow/resources/js/mail/operate.js"></script>
 </head>
 <body>
-<div id="signin"></div>
-<label id="info"></label>
-<script>
-    var APP_CLIENT_ID = "00000000481235D0";
-    var REDIRECT_URL = "http://outlook.ngrok.com/tShow/mail/redirect.do";
+<div id="info"></div>
 
-    WL.Event.subscribe("auth.login", onLogin);
-    WL.init({
-        client_id: APP_CLIENT_ID,
-        redirect_uri: REDIRECT_URL,
-        scope: "wl.signin",
-        response_type: "token",
-        status: true,
-        logging: true
-    });
+<div id="contact">
+    <div>
+        <button onclick="getContact()">get contact</button>
+        <div id="contacts"></div>
+    </div>
+    <div>
+        <button onclick="setContact({'first_name': '大锤', 'last_name': '王'})">set contact</button>
+    </div>
+</div>
 
-    WL.ui({
-        name: "signin",
-        element: "signin"
-    });
+<div id="calendar">
+    <div>
+        <button onclick="getCalendar()">get calendar</button>
+        <div id="calendars"></div>
+    </div>
+</div>
 
-    function onLogin(session){
-        if(!session.error){
-            WL.api({
-                path: "me",
-                method: "GET"
-            }).then(function(response){
-                        console.log(response);
-                        document.getElementById("info").innerText
-                                = "Hello," + response.first_name + " " + response.last_name + "!";
-                    },
-                    function(responseFailed){
-                        document.getElementById("info").innerText
-                                = "Error calling API: " + responseFailed.error.message;
-                    }
-            );
-        } else {
-            document.getElementById("info").innerText
-                    = "Error signing in: " + session.error_description;
-        }
-    }
-</script>
+<div id="email">
+    <button onclick="getMail()">get mail</button>
+    <div id="mails"></div>
+</div>
+
+<button onclick="auth()">auth</button>
 </body>
 </html>

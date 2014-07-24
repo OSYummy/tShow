@@ -3,8 +3,10 @@
 <html>
 <head>
     <title></title>
-    <script src="http://outlook.ngrok.com/tShow/resources/js/mail/wl.js"></script>
 </head>
 <body>
+redirect
+<script>
+</script>
 </body>
 </html>
