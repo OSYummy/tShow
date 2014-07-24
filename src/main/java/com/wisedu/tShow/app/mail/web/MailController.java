@@ -1,13 +1,22 @@
 package com.wisedu.tShow.app.mail.web;
 
 import com.wisedu.core.common.utils.PropertyConfigurerUtil;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -33,7 +42,26 @@ public class MailController {
     }
 
     @RequestMapping("/redirect.do")
-    public String redirect(HttpServletRequest request, HttpServletResponse response){
+    public String redirect(HttpServletRequest request) throws Exception{
+        HttpClient client=new DefaultHttpClient();
+        HttpPost method = new HttpPost("https://login.live.com/oauth20_token.srf");
+
+        List<NameValuePair> data=new ArrayList<NameValuePair>();
+
+        data.add(new BasicNameValuePair("client_id", appClientId));
+        data.add(new BasicNameValuePair("client_secret", appClientSecret));
+        data.add(new BasicNameValuePair("redirect_uri", "http://outlook.ngrok.com/tShow/mail/redirect.do"));
+        data.add(new BasicNameValuePair("code", request.getParameter("code")));
+        data.add(new BasicNameValuePair("grant_type", "authorization_code"));
+
+        UrlEncodedFormEntity entity = new UrlEncodedFormEntity(data, "utf-8");
+        entity.setContentType("application/x-www-form-urlencoded");
+        method.setEntity(entity);
+
+        HttpResponse response = client.execute(method);
+        System.out.println(response.getStatusLine());
+        System.out.println(EntityUtils.toString(response.getEntity(), "utf-8"));
+
         return "mail/redirect";
     }
 }
