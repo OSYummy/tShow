@@ -13,13 +13,13 @@ import java.util.LinkedList;
  * Time: 下午10:53
  * To change this template use File | Settings | File Templates.
  */
-public class CnTokenizer  extends Tokenizer {
+public class TSTokenizer extends Tokenizer {
 
-    protected CnTokenizer(Reader input) {
+    protected TSTokenizer(Reader input) {
         super(input);
     }
 
-    protected CnTokenizer(AttributeFactory factory, Reader input) {
+    protected TSTokenizer(AttributeFactory factory, Reader input) {
         super(factory, input);
     }
 
@@ -48,10 +48,10 @@ public class CnTokenizer  extends Tokenizer {
          * 添加边
          * @param token 词元
          */
-        public void addEdge(CnToken token){
+        public void addEdge(TSToken token){
             LinkedList list = _vertexList[token.getEnd()];
             if (list == null){
-                list = new LinkedList<CnToken>();
+                list = new LinkedList<TSToken>();
             }
             list.add(token);
         }

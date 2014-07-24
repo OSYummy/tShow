@@ -8,7 +8,7 @@ package com.wisedu.tShow.tools.search.TSAnalyzer;
  * Time: 下午10:38
  * To change this template use File | Settings | File Templates.
  */
-public class CnToken {
+public class TSToken {
     private String term;    //词;
 
     private String type;    //词性;
@@ -19,10 +19,10 @@ public class CnToken {
 
     private int  freq;          //词频;
 
-    public CnToken() {
+    public TSToken() {
     }
 
-    public CnToken(String term, String type, int start, int end, int freq) {
+    public TSToken(String term, String type, int start, int end, int freq) {
         this.term = term;
         this.type = type;
         this.start = start;
