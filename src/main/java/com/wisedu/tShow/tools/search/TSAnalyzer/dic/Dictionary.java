@@ -12,7 +12,17 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class Dictionary {
-    private TSTrie _dic;
+    private static Dictionary _dic;
+
+    private Dictionary(){
+    }
+
+    public static Dictionary getInstance(){
+        if (_dic == null){
+            _dic = new Dictionary();
+        }
+        return _dic;
+    }
 
     public void load(File file){
     }
