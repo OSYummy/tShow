@@ -3,10 +3,8 @@
 <html>
 <head>
     <title></title>
+    <script type="text/javascript" src="/tShow/resources/js/mail/wl.js"></script>
 </head>
 <body>
-redirect
-<script>
-</script>
 </body>
 </html>

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +43,11 @@ public class MailController {
     }
 
     @RequestMapping("/redirect.do")
-    public String redirect(HttpServletRequest request) throws Exception{
+    public String redirect(HttpServletRequest request, HttpServletResponse response) throws Exception{
+        if (request.getQueryString()==null){
+            return "mail/redirect";
+        }
+
         HttpClient client=new DefaultHttpClient();
         HttpPost method = new HttpPost("https://login.live.com/oauth20_token.srf");
 
@@ -58,9 +63,9 @@ public class MailController {
         entity.setContentType("application/x-www-form-urlencoded");
         method.setEntity(entity);
 
-        HttpResponse response = client.execute(method);
-        System.out.println(response.getStatusLine());
-        System.out.println(EntityUtils.toString(response.getEntity(), "utf-8"));
+        HttpResponse result = client.execute(method);
+        System.out.println(result.getStatusLine());
+        System.out.println(EntityUtils.toString(result.getEntity(), "utf-8"));
 
         return "mail/redirect";
     }

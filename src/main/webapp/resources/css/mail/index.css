@@ -1,0 +1,16 @@
+body{
+    font: 12px;
+}
+
+button{
+    width: 100px
+}
+
+#info{
+    color: #f00
+}
+#contact, #calendar, #event, #auth{
+    margin: 20px 0;
+    padding: 20px;
+    border: 2px solid #808080
+}
