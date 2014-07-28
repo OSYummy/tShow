@@ -1,9 +1,9 @@
 package com.wisedu.tShow.app.mail.bo;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
@@ -15,11 +15,22 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "T_TSHOW_OUTLOOK_TOKEN")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Token implements Serializable {
     private static final long serialVersionUID = 1L;
 
     // 主键
     @Id
+    @TableGenerator(
+            name = "tokenGen",
+            table = "S_TSHOW_OUTLOOK_TOKEN",
+            pkColumnName = "SEQUENCE_NAME",
+            pkColumnValue = "TOKEN_ID",
+            valueColumnName = "SEQUENCE_NEXT_VALUE",
+            initialValue = 0,
+            allocationSize = 1
+    )
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "tokenGen")
     @Column(name = "TOKEN_ID", nullable = false, unique = true, precision = 18, scale = 0)
     private Long tokenId;
 

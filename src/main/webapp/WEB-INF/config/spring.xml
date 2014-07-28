@@ -2,10 +2,13 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
     <!--系统配置文件-->
     <import resource="init.xml" />
+
     <!--数据库配置-->
-    <!--<import resource="datasource.xml" />-->
+    <import resource="datasource.xml" />
+
     <!--定时任务-->
     <!--<import resource="quartz.xml" />-->
     <!--系统配置-->

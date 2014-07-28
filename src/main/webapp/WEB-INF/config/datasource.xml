@@ -32,7 +32,7 @@
         <property name="maxIdleTimeExcessConnections" value="${cpool.maxIdleTimeExcessConnections}"/>
     </bean>
 
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
         <property name="packagesToScan">
             <list>
@@ -46,30 +46,17 @@
                 <prop key="format_sql">true</prop>
                 <prop key="query.substitutions">true 1, false 0</prop>
                 <prop key="hibernate.jdbc.batch_size">20</prop>
+                <prop key="hibernate.cache.use_second_level_cache">true</prop>
                 <prop key="hibernate.cache.use_query_cache">true</prop>
+                <prop key="hibernate.generate_statistics">true</prop>
+                <!--Ehcache 配置文件-->
+                <prop key="net.sf.ehcache.configurationResourceName">/WEB-INF/config/ehcache-hibernate.xml</prop>
+                <prop key="hibernate.cache.region.factory_class">net.sf.ehcache.hibernate.SingletonEhCacheRegionFactory</prop>
             </props>
-        </property>
-        <!--<property name="cacheProvider">
-            <ref bean="cacheProvider" />
-        </property>-->
-        <property name="lobHandler">
-            <ref bean="lobHandler" />
         </property>
     </bean>
 
-    <!--Hibernate二级缓存，通过EhCache插件-->
-    <!--<bean id="cacheProvider" class="com.wisedu.core.common.hibernate.SpringEhCacheProvider">
-        <property name="configLocation">
-            <value>/WEB-INF/config/ehcache-hibernate.xml</value>
-        </property>
-        <property name="storeLocation">
-            <value>/WEB-INF/cache/hibernate</value>
-        </property>
-    </bean>-->
-
-    <bean id="lobHandler" class="org.springframework.jdbc.support.lob.DefaultLobHandler" lazy-init="true" />
-
-    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory" />
     </bean>
 
