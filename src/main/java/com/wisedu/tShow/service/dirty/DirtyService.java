@@ -3,7 +3,7 @@ package com.wisedu.tShow.service.dirty;
 import com.wisedu.tShow.tools.dirty.ACTrie;
 import com.wisedu.tShow.tools.dirty.doc.Doc;
 import com.wisedu.tShow.tools.dirty.doc.TopDocs;
-import com.wisedu.core.common.utils.PropertyConfigurerUtil;
+import com.wisedu.core.utils.PropertyConfigurerUtil;
 import org.apache.axiom.om.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

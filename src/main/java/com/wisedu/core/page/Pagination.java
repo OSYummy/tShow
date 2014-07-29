@@ -1,4 +1,4 @@
-package com.wisedu.core.common.page;
+package com.wisedu.core.page;
 
 import java.io.Serializable;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.wisedu.core.common.exception;
+package com.wisedu.core.exception;
 
 import java.io.PrintStream;
 import java.rmi.RemoteException;

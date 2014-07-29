@@ -1,4 +1,4 @@
-package com.wisedu.core.common.utils;
+package com.wisedu.core.utils;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;

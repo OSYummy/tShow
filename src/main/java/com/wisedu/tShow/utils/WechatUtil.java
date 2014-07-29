@@ -1,6 +1,6 @@
 package com.wisedu.tShow.utils;
 
-import com.wisedu.core.common.utils.EncodeUtil;
+import com.wisedu.core.utils.EncodeUtil;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 

@@ -34,35 +34,19 @@ public class Token implements Serializable {
     @Column(name = "TOKEN_ID", nullable = false, unique = true, precision = 18, scale = 0)
     private Long tokenId;
 
-    // 失效时间点
-    @Column(name = "EXPIRES", nullable = false)
-    private Long expires;
-
-    // 有效时间段
-    @Column(name = "EXPIRES_IN", nullable = false)
-    private Long expiresIn;
-
-    // 授权令牌
-    @Column(name = "ACCESS_TOKEN", nullable = false)
-    private String accessToken;
-
     // 刷新令牌
     @Column(name = "REFRESH_TOKEN", nullable = false)
     private String refreshToken;
 
     // 用户ID
-    @Column(name = "USER_ID")
+    @Column(name = "USER_ID", nullable = false)
     private String userId;
 
     public Token() {
 
     }
 
-    public Token(Long tokenId, Long expires, Long expiresIn, String accessToken, String refreshToken, String userId) {
-        this.tokenId = tokenId;
-        this.expires = expires;
-        this.expiresIn = expiresIn;
-        this.accessToken = accessToken;
+    public Token(String refreshToken, String userId) {
         this.refreshToken = refreshToken;
         this.userId = userId;
     }
@@ -73,30 +57,6 @@ public class Token implements Serializable {
 
     public void setTokenId(Long tokenId) {
         this.tokenId = tokenId;
-    }
-
-    public Long getExpires() {
-        return expires;
-    }
-
-    public void setExpires(Long expires) {
-        this.expires = expires;
-    }
-
-    public Long getExpiresIn() {
-        return expiresIn;
-    }
-
-    public void setExpiresIn(Long expiresIn) {
-        this.expiresIn = expiresIn;
-    }
-
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
     }
 
     public String getRefreshToken() {

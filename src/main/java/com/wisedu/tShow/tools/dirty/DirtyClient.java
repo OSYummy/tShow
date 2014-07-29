@@ -1,6 +1,6 @@
 package com.wisedu.tShow.tools.dirty;
 
-import com.wisedu.core.common.exception.ServiceException;
+import com.wisedu.core.exception.ServiceException;
 import com.wisedu.tShow.tools.dirty.doc.Doc;
 import com.wisedu.tShow.tools.dirty.doc.TopDocs;
 import com.wisedu.tShow.service.dirty.DirtyConstants;

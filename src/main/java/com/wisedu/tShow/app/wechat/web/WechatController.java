@@ -1,6 +1,6 @@
 package com.wisedu.tShow.app.wechat.web;
 
-import com.wisedu.core.common.utils.PropertyConfigurerUtil;
+import com.wisedu.core.utils.PropertyConfigurerUtil;
 import com.wisedu.tShow.tools.wechat.WechatApiDispatcher;
 import com.wisedu.tShow.utils.WechatUtil;
 import org.apache.commons.io.IOUtils;

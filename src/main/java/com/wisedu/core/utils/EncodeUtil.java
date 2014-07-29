@@ -1,4 +1,4 @@
-package com.wisedu.core.common.utils;
+package com.wisedu.core.utils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

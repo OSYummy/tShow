@@ -1,4 +1,4 @@
-package com.wisedu.core.common.utils;
+package com.wisedu.core.utils;
 
 import org.apache.tools.zip.ZipEntry;
 import org.apache.tools.zip.ZipFile;
