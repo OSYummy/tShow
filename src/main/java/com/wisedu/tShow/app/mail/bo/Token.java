@@ -1,8 +1,5 @@
 package com.wisedu.tShow.app.mail.bo;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -15,7 +12,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "T_TSHOW_OUTLOOK_TOKEN")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+/*@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)*/
 public class Token implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -35,7 +32,7 @@ public class Token implements Serializable {
     private Long tokenId;
 
     // 刷新令牌
-    @Column(name = "REFRESH_TOKEN", nullable = false)
+    @Column(name = "REFRESH_TOKEN")
     private String refreshToken;
 
     // 用户ID

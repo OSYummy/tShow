@@ -11,7 +11,12 @@
 <body>
 
 <div id="info"></div>
-<div id="token">access token: ${accessToken}</div>
+<div id="user">
+    <div id="userId" value="${userId}"></div>
+    <div id="refreshToken" value="${refreshToken}"></div>
+    <div id="appClientId" value="${appClientId}"></div>
+    <div id="redirectUri" value="${redirectUri}"></div>
+</div>
 
 <%--Contact相关操作--%>
 <div id="contact">

@@ -3,6 +3,7 @@ package com.wisedu.tShow.app.mail.web;
 import com.wisedu.core.utils.PropertyConfigurerUtil;
 import com.wisedu.tShow.app.mail.bo.Token;
 import com.wisedu.tShow.app.mail.service.TokenService;
+import net.sf.json.JSONObject;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -71,11 +73,12 @@ public class MailController {
             token.setUserId(userId);
             tokenService.saveToken(token);
         }
+        request.getSession().setAttribute("userId", userId);
     }
 
     @RequestMapping("/operate.do")
     public String operate(HttpServletRequest request, HttpServletResponse response, ModelMap model){
-        String userId = request.getParameter("userId");
+        String userId = (String)request.getSession().getAttribute("userId");
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("userId", userId);
@@ -85,9 +88,29 @@ public class MailController {
             model.put("refreshToken", token.getRefreshToken());
         } else {
             Token token = new Token();
-            model.put("accessToken", "");
+            model.put("refreshToken", "");
         }
+
+        model.put("userId", userId);
+        model.put("appClientId", appClientId);
+        model.put("redirectUri", redirectUri);
+
         return "mail/operate";
+    }
+
+    @RequestMapping("/getRefreshToken.do")
+    public void getRefreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String userId = (String)request.getSession().getAttribute("userId");
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("userId", userId);
+        List<Token> tokens = tokenService.listToken(params);
+        if (tokens!=null && tokens.size()>0){
+            Token token = tokens.get(0);
+            response.getWriter().write("{'refreshToken':'" + token.getRefreshToken()+"'}");
+        } else {
+            response.getWriter().write("{'refreshToken': ''}");
+        }
     }
 
     @RequestMapping("/redirect.do")
@@ -113,8 +136,24 @@ public class MailController {
 
         HttpResponse result = client.execute(method);
         System.out.println(result.getStatusLine());
-        System.out.println(EntityUtils.toString(result.getEntity(), "utf-8"));
 
+        JSONObject object = JSONObject.fromObject(
+                EntityUtils.toString(result.getEntity(), "utf-8")
+        );
+
+        String userId = object.getString("user_id");
+        String refreshToken = object.getString("refresh_token");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("userId", userId);
+        List<Token> tokens = tokenService.listToken(params);
+        if (tokens!=null && tokens.size()>0){
+            Token token = tokens.get(0);
+            token.setRefreshToken(refreshToken);
+            tokenService.updateToken(token);
+        } else {
+            Token token = new Token(refreshToken, userId);
+            tokenService.saveToken(token);
+        }
         return "mail/redirect";
     }
 }

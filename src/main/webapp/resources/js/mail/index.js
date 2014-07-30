@@ -1,5 +1,4 @@
 $(function(){
-
     var appClientId = $("#appClientId").attr("value");
     var redirectUri = $("#redirectUri").attr("value");
     var callback = "http://isdk.dev.live.com/dev/isdk/callback.aspx";

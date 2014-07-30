@@ -49,14 +49,14 @@
                 <prop key="query.substitutions">true 1, false 0</prop>
                 <prop key="hibernate.jdbc.batch_size">20</prop>
                 <!-- 使用查询缓存 -->
-                <prop key="hibernate.cache.use_query_cache">true</prop>
+                <!--<prop key="hibernate.cache.use_query_cache">true</prop>-->
                 <prop key="hibernate.generate_statistics">true</prop>
                 <!--Ehcache 配置-->
-                <prop key="hibernate.cache.provider_configuration_file_resource_path">
+               <!-- <prop key="hibernate.cache.provider_configuration_file_resource_path">
                     /WEB-INF/config/ehcache-hibernate.xml
                 </prop>
                 <prop key="hibernate.cache.use_second_level_cache">true</prop>
-                <prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</prop>
+                <prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</prop>-->
             </props>
         </property>
         <property name="lobHandler">
