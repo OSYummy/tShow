@@ -97,7 +97,7 @@ public class Dictionary {
      * 从主词典中查询
      * @param word
      */
-    public List<Hit> matchInMainDic(String word){
+    public Hit matchInMainDic(String word){
         return _MainDic.match(word, 0);
     }
 }

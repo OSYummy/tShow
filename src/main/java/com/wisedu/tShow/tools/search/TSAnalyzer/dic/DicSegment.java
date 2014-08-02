@@ -93,7 +93,7 @@ public class DicSegment {
      * @param text 待匹配文本
      * @param offset 文本偏移量
      */
-    public List<Hit> match(String text, int offset){
+    public Hit match(String text, int offset){
         return match(root, text, offset);
     }
 
@@ -103,8 +103,10 @@ public class DicSegment {
      * @param text 待匹配文本
      * @param offset 文本偏移量
      */
-    public List<Hit> match(Node node, String text, int offset){
-        List<Hit> terms = new ArrayList<Hit>();
+    public Hit match(Node node, String text, int offset){
+        // 返回值
+        Hit hit = new Hit();
+        hit.setBegin(offset);
 
         Node current = node;
         while (true){
@@ -115,7 +117,7 @@ public class DicSegment {
             } else if (cmp == 0){
                 offset++;
                 if (current.hit != null){
-                    terms.add(current.hit);
+                    hit.setEnd(offset);
                 }
                 current = current.eqkid;
             } else {
@@ -127,6 +129,6 @@ public class DicSegment {
             }
         }
 
-        return terms;
+        return hit;
     }
 }
