@@ -1,7 +1,15 @@
 package com.wisedu.tShow.tools.search.TSAnalyzer.dic;
 
-import java.io.File;
-import java.util.ArrayList;
+import com.wisedu.tShow.tools.search.TSAnalyzer.cfg.Configuration;
+import com.wisedu.tShow.tools.search.TSAnalyzer.cfg.DefaultConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -12,142 +20,84 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class Dictionary {
-    private static Dictionary _dic;
+    private static Logger log = LoggerFactory.getLogger(Dictionary.class);
 
-    private Dictionary(){
+    // 同步锁
+    private static Object lock = Object.class;
+
+    // 配置
+    private Configuration _cfg;
+
+    // 词典单例
+    private static Dictionary _singleton;
+
+    // 主词典
+    private DicSegment _MainDic;
+
+    private Dictionary() {
+        _cfg = new DefaultConfig();
+        loadMainDic();
     }
 
-    public static Dictionary getInstance(){
-        if (_dic == null){
-            _dic = new Dictionary();
-        }
-        return _dic;
-    }
-
-    public void load(File file){
-    }
-
-    private class Term{
-
-    }
-
-    // Ternary Search Trie
-    private class TSTrie {
-        public class Node {
-            // 节点的字符
-            protected char splitchar;
-            // 子节点
-            protected Node lokid, eqkid, hikid;
-            // 词条
-            protected Term term;
-
-            public Node(char splitchar) {
-                this(null, splitchar);
-            }
-
-            public Node(Term term, char splitchar) {
-                this.term = term;
-                this.splitchar = splitchar;
+    public static Dictionary getInstance() {
+        synchronized (lock){
+            if (_singleton == null){
+                _singleton = new Dictionary();
             }
         }
+        return _singleton;
+    }
 
-        // 节点数
-        private Integer n;
+    /**
+     * 加载主词典
+     */
+    public void loadMainDic() {
+        _MainDic = new DicSegment();
 
-        // 根节点
-        private Node root = new Node('\0');
-
-        /**
-         * 插入字符串至节点
-         * @param word 字符串
-         * @param term 词条信息
-         */
-        public void insert(String word, Term term) {
-            insert(root, word, term);
+        InputStream is = this.getClass().getClassLoader().getResourceAsStream(_cfg.getMainDictionary());
+        if (is == null){
+            throw new RuntimeException("Fail to found main dictionary");
         }
 
-        /**
-         * 插入字符串至节点
-         * @param node 节点
-         * @param word 字符串
-         * @param term 词条信息
-         */
-        public void insert(Node node, String word, Term term){
-            int offset = 0;
-            Node current = node;
-            while (true){
-                char c = word.charAt(offset);
-                int cmp = c - current.splitchar;
-                if (cmp > 0){
-                    if (current.hikid == null){
-                        current.hikid = new Node(
-                                word.charAt(offset)
-                        );
-                    }
-                    current = current.hikid;
-                } else if (cmp == 0){
-                    offset++;
-                    if(offset == word.length()){
-                        current.term = term;
-                        break;
-                    }
-                    if (current.eqkid == null){
-                        current.eqkid = new Node(
-                                word.charAt(offset)
-                        );
-                    }
-                    current = current.eqkid;
-                } else {
-                    if (current.lokid == null){
-                        current.lokid = new Node(
-                                word.charAt(offset)
-                        );
-                    }
-                    current = current.lokid;
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is, "utf-8"), 512);
+            String word = null;
+            do {
+                word = reader.readLine();
+                if (word!=null || !"".equals(word)){
+                    _MainDic.insert(word, new Hit());
+                }
+            } while (word!=null);
+        } catch (IOException ioe){
+            throw new RuntimeException("Fail to load main dictionary");
+        } finally {
+            if (is!=null){
+                try {
+                    is.close();
+                } catch (IOException ioe){
+                    throw new RuntimeException("Fail to close input stream");
                 }
             }
         }
+    }
 
-        /**
-         * 文本匹配
-         * @param text 待匹配文本
-         * @param offset 文本偏移量
-         */
-        public List<Term> match(String text, int offset){
-            return match(root, text, offset);
-        }
-
-        /**
-         * 文本匹配
-         * @param node 起始节点
-         * @param text 待匹配文本
-         * @param offset 文本偏移量
-         */
-        public List<Term> match(Node node, String text, int offset){
-            List<Term> terms = new ArrayList<Term>();
-
-            Node current = node;
-            while (true){
-                char c = text.charAt(offset);
-                int cmp = c - current.splitchar;
-                if (cmp > 0){
-                    current = current.hikid;
-                } else if (cmp == 0){
-                    offset++;
-                    if (current.term != null){
-                        terms.add(current.term);
-                    }
-                    current = current.eqkid;
-                } else {
-                    current = current.lokid;
-                }
-                if (offset==text.length()
-                        || current==null){
-                    break;
-                }
+    /**
+     * 批量加载词条
+     * @param words
+     */
+    public void addWords(Collection<String> words){
+        if (words != null){
+            for (String word: words){
+                _MainDic.insert(word, new Hit());
             }
-
-            return terms;
         }
+    }
+
+    /**
+     * 从主词典中查询
+     * @param word
+     */
+    public List<Hit> matchInMainDic(String word){
+        return _MainDic.match(word, 0);
     }
 }

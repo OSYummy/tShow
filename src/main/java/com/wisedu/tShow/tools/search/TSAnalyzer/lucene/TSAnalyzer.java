@@ -1,8 +1,11 @@
 package com.wisedu.tShow.tools.search.TSAnalyzer.lucene;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.Tokenizer;
 
+import java.io.IOException;
 import java.io.Reader;
+import java.util.LinkedList;
 
 /**
  * Created with IntelliJ IDEA.
