@@ -47,7 +47,7 @@ public abstract class HibernateBaseDao<T, ID extends Serializable> extends Hiber
         return createCriteria(criterions).list();
     }
 
-    public T updateByUpdater(Updater<T> updater){
+    /*public T updateByUpdater(Updater<T> updater){
         ClassMetadata classMetadata=sessionFactory.getClassMetadata(getEntityClass());
         T bean=updater.getBean();
         T po=(T)getSession().get(getEntityClass(), classMetadata.getIdentifier(bean, EntityMode.POJO));
@@ -71,7 +71,7 @@ public abstract class HibernateBaseDao<T, ID extends Serializable> extends Hiber
                 throw new RuntimeException("copy property to persistent object failed: '"+ propName + "'", e);
             }
         }
-    }
+    }*/
 
     protected Criteria createCriteria(Criterion... criterions){
         Criteria criteria=getSession().createCriteria(getEntityClass());

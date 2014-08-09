@@ -2,6 +2,8 @@ package com.wisedu.tShow.app.mail.bo;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,7 +14,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "T_TSHOW_OUTLOOK_TOKEN")
-/*@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)*/
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Token implements Serializable {
     private static final long serialVersionUID = 1L;
 

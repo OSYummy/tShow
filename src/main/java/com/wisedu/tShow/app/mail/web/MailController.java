@@ -156,4 +156,19 @@ public class MailController {
         }
         return "mail/redirect";
     }
+
+    @RequestMapping("/test.do")
+    public void test(){
+        Token token = new Token();
+        token.setRefreshToken("huhu");
+        token.setUserId("huhuhu");
+        Long id = tokenService.saveToken(token);
+
+        Token haha = tokenService.getToken(id);
+        System.out.println(haha);
+
+        haha.setUserId("userId");
+
+        tokenService.saveToken(haha);
+    }
 }

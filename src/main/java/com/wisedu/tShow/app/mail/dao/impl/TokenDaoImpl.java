@@ -29,7 +29,8 @@ public class TokenDaoImpl extends HibernateBaseDao<Token, Long> implements Token
 
     @Override
     public Token getToken(Long id) {
-        return get(id);
+        return (Token)getSession().load(Token.class, id);
+        /*return get(id);*/
     }
 
     @Override
