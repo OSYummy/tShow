@@ -16,7 +16,10 @@ class TokenExecutor {
     private static final long RETRY_INTERVAL = 5000L;
 
     // 请求间隔
-    private static final long EXPIRE_INTERVAL = 300L;
+    private static final long EXPIRE_INTERVAL = 1000L;
+
+    // 同步锁
+    private static final Object Lock = new Object();
 
     private ScheduledExecutorService executor;
 
@@ -25,10 +28,22 @@ class TokenExecutor {
     }
 
     public void start(Runnable run){
-        executor.scheduleWithFixedDelay(run, 0, EXPIRE_INTERVAL, TimeUnit.SECONDS);
+        executor.scheduleWithFixedDelay(run, 0, EXPIRE_INTERVAL-300, TimeUnit.SECONDS);
     }
 
     public void shutdown(){
         executor.shutdownNow();
+    }
+
+    // 这里是否存在死锁？
+    public void setAccessToken(){
+        synchronized (Lock){
+        }
+    }
+
+    public String getAccessToken(){
+        synchronized (Lock){
+        }
+        return null;
     }
 }
