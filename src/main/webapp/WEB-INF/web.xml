@@ -61,15 +61,15 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
 
-    <servlet>
+    <!--<servlet>
         <servlet-name>axisServlet</servlet-name>
         <servlet-class>org.apache.axis2.transport.http.AxisServlet</servlet-class>
         <init-param>
             <param-name>axis2.xml.path</param-name>
-            <param-value>E:/Projects/Java/IDEA/tShow/src/main/webapp/WEB-INF/config/axis2-servlet.xml</param-value>
+            <param-value>E:/Project/wisedu/tShow/src/main/webapp/WEB-INF/config/axis2-servlet.xml</param-value>
         </init-param>
         <load-on-startup>2</load-on-startup>
-    </servlet>
+    </servlet>-->
 
     <filter-mapping>
         <filter-name>timefilter</filter-name>
@@ -91,7 +91,7 @@
         <url-pattern>*.do</url-pattern>
     </servlet-mapping>
 
-    <servlet-mapping>
+<!--    <servlet-mapping>
         <servlet-name>axisServlet</servlet-name>
         <url-pattern>*.jws</url-pattern>
     </servlet-mapping>
@@ -99,5 +99,5 @@
     <servlet-mapping>
         <servlet-name>axisServlet</servlet-name>
         <url-pattern>/services/*</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping>-->
 </web-app>
