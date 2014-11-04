@@ -6,6 +6,8 @@ import com.wisedu.wechat4j.conf.Configuration;
 import com.wisedu.wechat4j.entity.Button;
 import com.wisedu.wechat4j.internal.http.HttpParameter;
 import com.wisedu.wechat4j.internal.http.HttpResponse;
+import net.sf.json.JSON;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.List;
@@ -16,30 +18,36 @@ class WechatImpl extends WechatBaseImpl implements Wechat {
     }
 
     private HttpResponse get(String url, HttpParameter[] params) throws WechatException {
-        ensureAuthorizationEnabled();
-        try {
-            return http.get(url, params, auth);
-        } catch (IOException ioe){
-            throw new WechatException("Http Get failed", ioe);
+        HttpResponse response = null;
+        for (int i=0; i<conf.getHttpRetryCount(); i++){
+            ensureAuthorizationEnabled();
+            try {
+                return http.get(url, params, auth);
+            } catch (IOException ioe){
+                throw new WechatException("Http Get failed", ioe);
+            }
         }
+        return response;
     }
 
     private HttpResponse post(String url, HttpParameter[] params) throws WechatException{
-        ensureAuthorizationEnabled();
-        try {
-            return http.post(url, params, auth);
-        } catch (IOException ioe){
-            throw new WechatException("Http Post failed", ioe);
+        HttpResponse response = null;
+        for (int i=0; i<conf.getHttpRetryCount(); i++){
+            ensureAuthorizationEnabled();
+            try {
+                response = http.post(url, params, auth);
+            } catch (IOException ioe){
+                throw new WechatException("Http Post failed", ioe);
+            }
         }
+        return response;
     }
 
     @Override public List<Button> listButtons() throws WechatException{
-        ensureAuthorizationEnabled();
         return factory.createButtonList(get(conf.getRestBaseURL() + "menu/get", null));
     }
 
     public void createButtons(List<Button> buttons) throws WechatException{
-        ensureAuthorizationEnabled();
         String url = conf.getRestBaseURL() + "menu/create";
         HttpParameter[] params = new HttpParameter[]{
                 new HttpParameter("", "")
@@ -48,7 +56,6 @@ class WechatImpl extends WechatBaseImpl implements Wechat {
     }
 
     public void deleteButtons() throws WechatException{
-        ensureAuthorizationEnabled();
         get(conf.getRestBaseURL() + "menu/delete", null);
     }
 }
