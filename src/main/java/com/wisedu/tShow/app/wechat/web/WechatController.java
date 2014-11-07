@@ -5,8 +5,11 @@ import com.qq.weixin.mp.aes.WXBizMsgCrypt;
 import com.wisedu.core.utils.PropertyConfigurerUtil;
 import com.wisedu.tShow.tools.wechat.WechatApiDispatcher;
 import com.wisedu.tShow.utils.WechatUtil;
+import net.sf.json.JSON;
 import org.apache.commons.io.IOUtils;
 import org.dom4j.DocumentException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -29,15 +32,10 @@ import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 
-/**
- * Created with IntelliJ IDEA.
- * User: YUMMY
- * Date: 14-7-10
- * Time: 下午3:02
- * To change this template use File | Settings | File Templates.
- */
 @Controller
 @RequestMapping(value="/wechat")
 public class WechatController {
@@ -48,7 +46,7 @@ public class WechatController {
     private static final String qyCorpID = (String)PropertyConfigurerUtil.getProperty("app.wechat.qy.CorpID");
     private static final String qyEncodingAESKey = (String)PropertyConfigurerUtil.getProperty("app.wechat.qy.EncodingAESKey");
 
-    @RequestMapping(value = "/qy/index.do", method = RequestMethod.GET)
+    @RequestMapping(value = "/qy/message.do", method = RequestMethod.GET)
     public void qyCheck(HttpServletRequest request, HttpServletResponse response){
         // 加密签名
         String sVerifyMsgSig = request.getParameter("msg_signature");
@@ -72,8 +70,8 @@ public class WechatController {
         }
     }
 
-    @RequestMapping(value = "/qy/index.do", method = RequestMethod.POST)
-    public void qyProcess(HttpServletRequest request, HttpServletResponse response){
+    @RequestMapping(value = "/qy/message.do", method = RequestMethod.POST)
+    public void qyMessage(HttpServletRequest request, HttpServletResponse response){
         // 加密签名
         String sReqMsgSig = request.getParameter("msg_signature");
         // 时间戳
@@ -131,11 +129,18 @@ public class WechatController {
             createTimeNode.setTextContent(Integer.toString((int)System.currentTimeMillis()));
 
             Node msgTypeNode = root.getElementsByTagName("MsgType").item(0);
+
             if (msgTypeNode!=null && "text".equals(msgTypeNode.getTextContent())){
+                String tlcl = "http://billie66.github.io/TLCL/";
+                CDATASection contentNode = (CDATASection)(root.getElementsByTagName("Content").item(0).getChildNodes().item(0));
+                contentNode.setData("<a href=\"" + tlcl + "\">tlcl</a><p style=\"color:red\">Style</p>");
+
                 root.removeChild(root.getElementsByTagName("MsgId").item(0));
                 root.removeChild(root.getElementsByTagName("AgentID").item(0));
             }
         }
+
+
 
         String sEncryptMsg = null;
         if (wxcpt!=null && document!=null){
@@ -174,6 +179,32 @@ public class WechatController {
                 log.error(ioe.getMessage());
             }
         }
+    }
+
+    @RequestMapping(value = "/qy/more.do")
+    public String qyMore(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
+        String code = request.getParameter("code");
+        String agentid = "4";
+        String accessToken = "KqwpKbEUoj3PAWMKirEfzMcOkMy3ig6YuRJmzOe4uuY";
+        String url = "https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo?"
+                + "access_token=" + accessToken + "&code=" + code + "&agentid=" + agentid;
+
+        try {
+            HttpURLConnection con = (HttpURLConnection)new URL(url).openConnection();
+            con.setRequestMethod("GET");
+            con.setDoInput(true);
+            InputStream in = con.getInputStream();
+            JSONObject jsonObject = new JSONObject(
+                    new JSONTokener(new BufferedReader(new InputStreamReader(in, "utf-8")))
+            );
+            in.close();
+
+            model.addAttribute("userid", jsonObject.getString("UserId"));
+            model.addAttribute("deviceid", jsonObject.getString("DeviceId"));
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return "wechat/more";
     }
 
     // 公众号

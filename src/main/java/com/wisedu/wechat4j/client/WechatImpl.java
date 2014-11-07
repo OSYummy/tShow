@@ -50,7 +50,7 @@ class WechatImpl extends WechatBaseImpl implements Wechat {
     public void createButtons(List<Button> buttons) throws WechatException{
         String url = conf.getRestBaseURL() + "menu/create";
         HttpParameter[] params = new HttpParameter[]{
-                new HttpParameter("", "")
+                new HttpParameter(new JSONObject())
         };
         post(url, params);
     }

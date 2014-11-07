@@ -1,6 +1,5 @@
 package com.wisedu.wechat4j.internal.http;
 
-import com.wisedu.wechat4j.WechatException;
 import com.wisedu.wechat4j.conf.ConfigurationContext;
 import com.wisedu.wechat4j.conf.HttpClientConfiguration;
 
@@ -44,6 +43,10 @@ public class HttpClientImpl extends HttpClientBase implements HttpResponseCode, 
                             // file upload
                         } else if (HttpParameter.containsJSON(request.getParameters())){
                             // JSON
+                            if (request.getParameters().length > 1){
+                                throw new IOException("Invalid Http Parameters.");
+                            }
+
                             con.setRequestProperty("Content-Type", "application/json");
                             con.setDoOutput(true);
                             os = con.getOutputStream();
@@ -57,7 +60,6 @@ public class HttpClientImpl extends HttpClientBase implements HttpResponseCode, 
                                     }
                                     os.write(bytes);
                                 } else {
-
                                 }
                             }
                         } else {
