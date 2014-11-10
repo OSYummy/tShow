@@ -1,29 +1,26 @@
 package com.wisedu.wechat4j.auth;
 
-import com.wisedu.wechat4j.WechatException;
-import com.wisedu.wechat4j.api.Wechat;
 import com.wisedu.wechat4j.internal.http.HttpResponse;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.Serializable;
 
-public class AccessToken implements Serializable {
+public class AccessToken {
     private String token;
     private long expires;
-    private long timestamp = System.currentTimeMillis();
 
-    public AccessToken(HttpResponse response) throws WechatException{
-        try {
-            JSONObject jsonObject = response.asJSONObject();
-            if (null != jsonObject.getString("access_token")) {
-                this.token = jsonObject.getString("access_token");
-                this.expires = jsonObject.getInt("expires_in");
-            } else {
-                throw new WechatException(jsonObject);
-            }
-        } catch (IOException ioe){
-            throw new WechatException("Initialized fail", ioe);
+    private JSONObject object;
+
+    public AccessToken(HttpResponse response) throws IOException {
+        this(response.asJSONObject());
+    }
+
+    public AccessToken(JSONObject jsonObject) {
+        if (jsonObject.has("access_token")) {
+            this.token = jsonObject.getString("access_token");
+            this.expires = jsonObject.getLong("expires_in");
+        } else {
+            this.object = jsonObject;
         }
     }
 
@@ -40,7 +37,7 @@ public class AccessToken implements Serializable {
         return expires;
     }
 
-    public long getTimestamp(){
-        return timestamp;
+    public JSONObject getObject(){
+        return object;
     }
 }

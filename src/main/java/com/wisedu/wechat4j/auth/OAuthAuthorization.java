@@ -21,9 +21,7 @@ public class OAuthAuthorization implements Authorization, OAuthSupport, Serializ
 
     private String appId;
     private String appSecret;
-    private AccessToken accessToken;
-
-    private static final W4JLRUCache<String, AccessToken> appTokenMap = new W4JLRUCache<String, AccessToken>(20);
+    private AccessToken oauthToken;
 
     public OAuthAuthorization(AuthorizationConfiguration conf, License license, HttpClient http){
         this.conf = conf;
@@ -37,56 +35,33 @@ public class OAuthAuthorization implements Authorization, OAuthSupport, Serializ
     }
 
     @Override public void setAccessToken(AccessToken accessToken) {
+        this.oauthToken = accessToken;
     }
 
     @Override public HttpParameter[] generateAuthorizationParameter(){
-        AccessToken accessToken = null;
-        try {
-            accessToken = getAccessToken();
-        } catch (WechatException we){
-        }
-
-        if (accessToken != null) {
+        if (oauthToken != null){
             return new HttpParameter[]{
-                    new HttpParameter("access_token", accessToken.getToken())
+                    new HttpParameter("access_token", oauthToken.getToken())
             };
         }
-        return new HttpParameter[]{};
+        return null;
     }
 
     @Override public boolean isEnabled(){
-        try {
-            return getAccessToken()!=null;
-        } catch (WechatException we){
-        }
-        return false;
+        return oauthToken != null;
     }
 
     @Override public AccessToken getAccessToken() throws WechatException{
-        long interval=0, expires=0;
-        AccessToken accessToken = appTokenMap.get(appId);
-        if (accessToken != null){
-            expires = accessToken.getExpires();
-            interval = System.currentTimeMillis() - accessToken.getTimestamp();
+        AccessToken token = null;
+        try {
+            String url = conf.getOAuthAccessTokenURL()
+                    + "?appid=" + this.appId
+                    + "&secret=" + this.appSecret
+                    + "&grant_type=client_credential";
+            token = new AccessToken(http.get(url));
+        } catch (IOException ioe){
+            throw new WechatException("GetAccessToken Failed", ioe);
         }
-
-        if (interval<<2 >= expires){
-            try {
-                String url = conf.getOAuthAccessTokenURL()
-                        + "?appid=" + this.appId
-                        + "&secret=" + this.appSecret
-                        + "&grant_type=client_credential";
-                HttpResponse response = http.get(url);
-                if (response.getStatusCode() != 200){
-                    throw new WechatException("authorization failed.");
-                }
-                accessToken = new AccessToken(response);
-                appTokenMap.put(appId, accessToken);
-            } catch (IOException ioe){
-                throw new WechatException("Get access token failed", ioe);
-            }
-        }
-
-        return accessToken;
+        return token;
     }
 }
