@@ -15,6 +15,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements Se
     private static final String OAUTH_TOKEN = "oauth.token";
     private static final String OAUTH_APPID = "oauth.appId";
     private static final String OAUTH_APPSECRET = "oauth.appSecret";
+    private static final String OAUTH_ACCESSTOKEN = "oauth.accessToken";
 
     // HTTP connection
     private static final String HTTP_RETRY_COUNT = "http.retryCount";
@@ -147,6 +148,10 @@ public final class PropertyConfiguration extends ConfigurationBase implements Se
 
         if (notNull(props, OAUTH_APPSECRET)){
             setOAuthAppSecret(getStringProperty(props, OAUTH_APPSECRET));
+        }
+
+        if (notNull(props, OAUTH_ACCESSTOKEN)) {
+            setOAuthAccessToken(getStringProperty(props, OAUTH_ACCESSTOKEN));
         }
 
         if (notNull(props, HTTP_RETRY_COUNT)){

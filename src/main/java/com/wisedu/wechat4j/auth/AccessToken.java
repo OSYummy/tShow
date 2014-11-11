@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class AccessToken {
     private String token;
-    private long expires;
+    private Long expires;
 
     private JSONObject object;
 
@@ -24,7 +24,7 @@ public class AccessToken {
         }
     }
 
-    public AccessToken(String token, long expires) {
+    public AccessToken(String token, Long expires) {
         this.token = token;
         this.expires = expires;
     }

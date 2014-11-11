@@ -7,5 +7,7 @@ public interface AuthorizationConfiguration {
 
     String getOAuthAppSecret();
 
+    String getOAuthAccessToken();
+
     String getOAuthAccessTokenURL();
 }
