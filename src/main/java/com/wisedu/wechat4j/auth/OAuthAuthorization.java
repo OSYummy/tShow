@@ -5,9 +5,6 @@ import com.wisedu.wechat4j.client.License;
 import com.wisedu.wechat4j.conf.AuthorizationConfiguration;
 import com.wisedu.wechat4j.internal.http.HttpClient;
 import com.wisedu.wechat4j.internal.http.HttpParameter;
-import com.wisedu.wechat4j.internal.http.HttpResponse;
-import com.wisedu.wechat4j.internal.util.W4JLRUCache;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.Serializable;

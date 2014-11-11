@@ -1,4 +1,4 @@
-package org.json;
+package com.wisedu.wechat4j.internal.json;
 
 /*
 Copyright (c) 2006 JSON.org

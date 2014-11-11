@@ -1,4 +1,4 @@
-package org.json;
+package com.wisedu.wechat4j.internal.json;
 
 import java.io.IOException;
 import java.io.Writer;
