@@ -3,10 +3,10 @@ package com.wisedu.wechat4j.internal.http;
 import com.wisedu.wechat4j.WechatException;
 import com.wisedu.wechat4j.conf.ConfigurationContext;
 import com.wisedu.wechat4j.conf.HttpClientConfiguration;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONTokener;
+import com.wisedu.wechat4j.internal.json.JSONArray;
+import com.wisedu.wechat4j.internal.json.JSONException;
+import com.wisedu.wechat4j.internal.json.JSONObject;
+import com.wisedu.wechat4j.internal.json.JSONTokener;
 
 import java.io.*;
 import java.util.List;

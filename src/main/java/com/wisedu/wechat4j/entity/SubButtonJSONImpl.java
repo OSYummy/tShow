@@ -1,6 +1,6 @@
 package com.wisedu.wechat4j.entity;
 
-import org.json.JSONObject;
+import com.wisedu.wechat4j.internal.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.Collections;

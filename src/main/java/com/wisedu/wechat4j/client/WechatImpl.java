@@ -6,8 +6,7 @@ import com.wisedu.wechat4j.conf.Configuration;
 import com.wisedu.wechat4j.entity.Button;
 import com.wisedu.wechat4j.internal.http.HttpParameter;
 import com.wisedu.wechat4j.internal.http.HttpResponse;
-import net.sf.json.JSON;
-import org.json.JSONObject;
+import com.wisedu.wechat4j.internal.json.JSONObject;
 
 import java.io.IOException;
 import java.util.List;

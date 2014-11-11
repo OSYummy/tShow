@@ -1,6 +1,7 @@
 package com.wisedu.wechat4j;
 
-import org.json.JSONObject;
+
+import com.wisedu.wechat4j.internal.json.JSONObject;
 
 public class WechatException extends Exception {
     private int errorCode = -1;

@@ -1,7 +1,7 @@
 package com.wisedu.wechat4j.auth;
 
 import com.wisedu.wechat4j.internal.http.HttpResponse;
-import org.json.JSONObject;
+import com.wisedu.wechat4j.internal.json.JSONObject;
 
 import java.io.IOException;
 

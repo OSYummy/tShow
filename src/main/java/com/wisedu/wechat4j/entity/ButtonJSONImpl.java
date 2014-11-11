@@ -2,9 +2,9 @@ package com.wisedu.wechat4j.entity;
 
 import com.wisedu.wechat4j.WechatException;
 import com.wisedu.wechat4j.internal.http.HttpResponse;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.wisedu.wechat4j.internal.json.JSONArray;
+import com.wisedu.wechat4j.internal.json.JSONException;
+import com.wisedu.wechat4j.internal.json.JSONObject;
 
 import java.io.IOException;
 import java.io.Serializable;
