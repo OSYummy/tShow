@@ -10,9 +10,7 @@ import com.wisedu.wechat4j.internal.http.HttpClientFactory;
 
 import java.io.Serializable;
 
-abstract class WechatBaseImpl implements WechatBase, OAuthSupport, Serializable {
-    private static final long serialVersionUID = -361426419584261734L;
-
+abstract class WechatBaseImpl extends Wechat implements WechatBase{
     protected Configuration conf;
     protected Authorization auth;
     protected HttpClient http;
@@ -25,7 +23,7 @@ abstract class WechatBaseImpl implements WechatBase, OAuthSupport, Serializable 
         this.factory = new JSONImplFactory();
     }
 
-    @Override public void setOAuthApp(String appId, String appSecret){
+    @Override public void setOAuthApp(String token, String appId, String appSecret){
         if (appId == null){
             throw new NullPointerException("app id is null");
         }
@@ -34,9 +32,9 @@ abstract class WechatBaseImpl implements WechatBase, OAuthSupport, Serializable 
         }
 
         if (auth instanceof NullAuthorization){
-            OAuthAuthorization auth
-                    = new OAuthAuthorization(conf, new LicenseImpl("", appId, appSecret), http);
-            auth.setOAuthApp(appId, appSecret);
+            Authorization auth = AuthorizationFactory.getInstance(
+                    conf, new License(token, appId, appSecret), http
+            );
             this.auth = auth;
         } else if (auth instanceof  OAuthAuthorization){
             throw new IllegalStateException("app id/secret pair already set.");

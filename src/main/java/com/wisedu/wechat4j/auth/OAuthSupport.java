@@ -6,11 +6,12 @@ public interface OAuthSupport {
     /**
      * sets the OAuth AppID and App secret
      *
+     * @param token OAuth Token
      * @param appId OAuth AppID
      * @param appSecret OAuth App secret
      * @throws IllegalStateException when OAuth AppId has already been set
      */
-    void setOAuthApp(String appId, String appSecret);
+    void setOAuthApp(String token, String appId, String appSecret);
 
     /**
      * set the access token

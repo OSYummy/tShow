@@ -1,13 +1,18 @@
 package com.wisedu.wechat4j.internal.http;
 
-import com.wisedu.wechat4j.conf.Configuration;
 import com.wisedu.wechat4j.conf.ConfigurationContext;
 import com.wisedu.wechat4j.conf.HttpClientConfiguration;
+import com.wisedu.wechat4j.internal.logger.Logger;
 
+import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-public final class HttpClientFactory {
+public final class HttpClientFactory implements Serializable {
+    private static final long serialVersionUID = -5854084715172501672L;
+
+    private static final Logger log  = Logger.getLogger(HttpClientFactory.class);
+
     private static final Constructor<HttpClient> HTTP_CLIENT_CONSTRUCTOR;
     private static final String HTTP_CLIENT_IMPLEMENTATION = "wechat4j.http.httpClient";
 
@@ -43,14 +48,19 @@ public final class HttpClientFactory {
 
     public static HttpClient getInstance(HttpClientConfiguration conf){
         HttpClient client = null;
+
         try {
             client = HTTP_CLIENT_CONSTRUCTOR.newInstance(conf);
         } catch (InstantiationException ie){
-            throw new AssertionError(ie);
+            log.error(ie.getMessage());
         } catch (IllegalAccessException iae){
-            throw new AssertionError(iae);
+            log.error(iae.getMessage());
         } catch (InvocationTargetException ite){
-            throw new AssertionError(ite);
+            log.error(ite.getMessage());
+        }
+
+        if (client == null){
+            client = NullHttpClient.getInstance();
         }
         return client;
     }

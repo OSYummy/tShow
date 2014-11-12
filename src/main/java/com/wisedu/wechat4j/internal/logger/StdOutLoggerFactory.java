@@ -1,4 +1,4 @@
-package com.wisedu.wechat4j.logger;
+package com.wisedu.wechat4j.internal.logger;
 
 final class StdOutLoggerFactory extends LoggerFactory{
     private static final Logger SIGLETON = new StdOutLogger();

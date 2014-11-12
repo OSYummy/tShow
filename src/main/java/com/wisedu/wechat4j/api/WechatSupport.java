@@ -4,7 +4,7 @@ import com.wisedu.wechat4j.auth.OAuthSupport;
 
 import java.io.Serializable;
 
-public interface Wechat extends Serializable,
+public interface WechatSupport extends Serializable,
         OAuthSupport,
         MenuService,
         GroupService{

@@ -1,20 +1,18 @@
 package com.wisedu.wechat4j.client;
 
-import com.wisedu.wechat4j.api.Wechat;
+import com.wisedu.wechat4j.WechatException;
 import com.wisedu.wechat4j.conf.Configuration;
 import com.wisedu.wechat4j.conf.ConfigurationContext;
-import com.wisedu.wechat4j.internal.util.W4JLRUCache;
 
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 public final class WechatFactory implements Serializable {
-    private static final long serialVersionUID = 690910694740944346L;
+    private static final long serialVersionUID = 3863069838898599852L;
 
     private static final Configuration conf;
     private static final Constructor<Wechat> WECHAT_CONSTRUCTOR;
-    private static final W4JLRUCache<License, Wechat> instanceMap = new W4JLRUCache<License, Wechat>(20);
 
     static {
         conf = ConfigurationContext.getInstance();
@@ -34,28 +32,16 @@ public final class WechatFactory implements Serializable {
 
     private WechatFactory(){}
 
-    public static Wechat getInstance(){
-        return null;
-    }
-
-    public static Wechat getInstance(License license){
-        return createClient(license, conf);
-    }
-
-    private static Wechat createClient(License license, Configuration conf){
+    public static Wechat create() throws WechatException{
         Wechat client = null;
         try {
-            client = instanceMap.get(license);
-            if (client == null){
-                client = WECHAT_CONSTRUCTOR.newInstance(conf, license);
-                instanceMap.put(license, client);
-            }
+            client = WECHAT_CONSTRUCTOR.newInstance(conf);
         } catch (InstantiationException ie){
-            throw new AssertionError(ie);
+            throw new WechatException(ie);
         } catch (IllegalAccessException iae){
-            throw new AssertionError(iae);
+            throw new WechatException(iae);
         } catch (InvocationTargetException ite){
-            throw new AssertionError(ite);
+            throw new WechatException(ite);
         }
         return client;
     }

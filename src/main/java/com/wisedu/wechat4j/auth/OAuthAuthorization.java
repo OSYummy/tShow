@@ -13,20 +13,20 @@ public class OAuthAuthorization implements Authorization, OAuthSupport, Serializ
     private static final long serialVersionUID = -634805421434046548L;
 
     private HttpClient http;
-    private final License license;
     private final AuthorizationConfiguration conf;
 
+    private String token;
     private String appId;
     private String appSecret;
     private AccessToken oauthToken;
 
-    public OAuthAuthorization(AuthorizationConfiguration conf, License license, HttpClient http){
+    public OAuthAuthorization(AuthorizationConfiguration conf, HttpClient http){
         this.conf = conf;
         this.http = http;
-        this.license = license;
     }
 
-    @Override public void setOAuthApp(String appId, String appSecret){
+    @Override public void setOAuthApp(String token, String appId, String appSecret){
+        this.token = token!=null? token: "";
         this.appId = appId!=null? appId: "";
         this.appSecret = appSecret!=null? appSecret: "";
     }
@@ -49,16 +49,15 @@ public class OAuthAuthorization implements Authorization, OAuthSupport, Serializ
     }
 
     @Override public AccessToken getAccessToken() throws WechatException{
-        AccessToken token = null;
         try {
             String url = conf.getOAuthAccessTokenURL()
                     + "?appid=" + this.appId
                     + "&secret=" + this.appSecret
                     + "&grant_type=client_credential";
-            token = new AccessToken(http.get(url));
+            oauthToken = new AccessToken(http.get(url));
         } catch (IOException ioe){
-            throw new WechatException("GetAccessToken Failed", ioe);
+            throw new WechatException("Get AccessToken Failed", ioe);
         }
-        return token;
+        return oauthToken;
     }
 }

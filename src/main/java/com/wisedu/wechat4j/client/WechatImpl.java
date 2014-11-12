@@ -1,7 +1,6 @@
 package com.wisedu.wechat4j.client;
 
 import com.wisedu.wechat4j.WechatException;
-import com.wisedu.wechat4j.api.Wechat;
 import com.wisedu.wechat4j.conf.Configuration;
 import com.wisedu.wechat4j.entity.Button;
 import com.wisedu.wechat4j.internal.http.HttpParameter;
@@ -9,9 +8,12 @@ import com.wisedu.wechat4j.internal.http.HttpResponse;
 import com.wisedu.wechat4j.internal.json.JSONObject;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 
-class WechatImpl extends WechatBaseImpl implements Wechat {
+class WechatImpl extends WechatBaseImpl implements Serializable {
+    private static final long serialVersionUID = -1192031969535006001L;
+
     WechatImpl(Configuration conf, License license){
         super(conf, license);
     }
