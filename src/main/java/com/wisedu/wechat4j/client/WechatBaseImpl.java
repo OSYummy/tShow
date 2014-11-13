@@ -58,7 +58,7 @@ abstract class WechatBaseImpl extends Wechat implements WechatBase{
 
     protected final void ensureAuthorizationEnabled() throws WechatException{
         if (!auth.isEnabled()){
-            throw new WechatException("Ensure authorization enabled fail");
+            throw new WechatException("Ensure authorization enabled failed");
         }
     }
 

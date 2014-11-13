@@ -7,5 +7,7 @@ import java.io.Serializable;
 import java.util.List;
 
 public interface ObjectFactory {
+    AccessToken createAccessToken(HttpResponse response) throws WechatException;
+
     Menu createMenu(HttpResponse response) throws WechatException;
 }

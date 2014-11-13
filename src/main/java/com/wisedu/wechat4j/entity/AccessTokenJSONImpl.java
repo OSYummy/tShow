@@ -32,6 +32,10 @@ final class AccessTokenJSONImpl extends ResponseJSONImpl implements AccessToken,
         }
     }
 
+    static AccessToken createAccessToken(HttpResponse response) throws IOException{
+        return new AccessTokenJSONImpl(response);
+    }
+
     @Override public String getToken() {
         return token;
     }
