@@ -8,7 +8,6 @@ import com.wisedu.wechat4j.entity.ObjectFactory;
 import com.wisedu.wechat4j.internal.http.HttpClient;
 import com.wisedu.wechat4j.internal.http.HttpClientFactory;
 
-import java.io.Serializable;
 
 abstract class WechatBaseImpl extends Wechat implements WechatBase{
     protected Configuration conf;
@@ -21,6 +20,14 @@ abstract class WechatBaseImpl extends Wechat implements WechatBase{
         this.http = HttpClientFactory.getInstance(conf);
         this.auth = AuthorizationFactory.getInstance(conf, license, http);
         this.factory = new JSONImplFactory();
+    }
+
+    @Override public String getAppID() {
+        return getOAuth().getAppID();
+    }
+
+    @Override public String getAppSecret() {
+        return getOAuth().getAppSecret();
     }
 
     @Override public void setOAuthApp(String token, String appId, String appSecret){

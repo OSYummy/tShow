@@ -1,7 +1,6 @@
 package com.wisedu.wechat4j.auth;
 
 import com.wisedu.wechat4j.WechatException;
-import com.wisedu.wechat4j.client.License;
 import com.wisedu.wechat4j.conf.AuthorizationConfiguration;
 import com.wisedu.wechat4j.internal.http.HttpClient;
 import com.wisedu.wechat4j.internal.http.HttpParameter;
@@ -9,14 +8,14 @@ import com.wisedu.wechat4j.internal.http.HttpParameter;
 import java.io.IOException;
 import java.io.Serializable;
 
-public class OAuthAuthorization implements Authorization, OAuthSupport, Serializable {
+public final class OAuthAuthorization implements Authorization, OAuthSupport, Serializable {
     private static final long serialVersionUID = -634805421434046548L;
 
     private HttpClient http;
     private final AuthorizationConfiguration conf;
 
     private String token;
-    private String appId;
+    private String appID;
     private String appSecret;
     private AccessToken oauthToken;
 
@@ -25,9 +24,17 @@ public class OAuthAuthorization implements Authorization, OAuthSupport, Serializ
         this.http = http;
     }
 
-    @Override public void setOAuthApp(String token, String appId, String appSecret){
+    @Override public String getAppID() {
+        return appID;
+    }
+
+    @Override public String getAppSecret() {
+        return appSecret;
+    }
+
+    @Override public void setOAuthApp(String token, String appID, String appSecret){
         this.token = token!=null? token: "";
-        this.appId = appId!=null? appId: "";
+        this.appID = appID!=null? appID: "";
         this.appSecret = appSecret!=null? appSecret: "";
     }
 
@@ -51,10 +58,10 @@ public class OAuthAuthorization implements Authorization, OAuthSupport, Serializ
     @Override public AccessToken getAccessToken() throws WechatException{
         try {
             String url = conf.getOAuthAccessTokenURL()
-                    + "?appid=" + this.appId
+                    + "?appid=" + this.appID
                     + "&secret=" + this.appSecret
                     + "&grant_type=client_credential";
-            oauthToken = new AccessToken(http.get(url));
+            this.oauthToken = new AccessToken(http.get(url));
         } catch (IOException ioe){
             throw new WechatException("Get AccessToken Failed", ioe);
         }

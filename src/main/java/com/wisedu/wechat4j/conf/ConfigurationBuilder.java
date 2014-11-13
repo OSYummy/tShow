@@ -29,7 +29,7 @@ public final class ConfigurationBuilder {
 
     public ConfigurationBuilder setOAuthAppId(String oAuthAppId){
         checkNotBuilt();
-        conf.setOAuthAppId(oAuthAppId);
+        conf.setOAuthAppID(oAuthAppId);
         return this;
     }
 

@@ -143,7 +143,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements Se
         }
 
         if (notNull(props, OAUTH_APPID)){
-            setOAuthAppId(getStringProperty(props, OAUTH_APPID));
+            setOAuthAppID(getStringProperty(props, OAUTH_APPID));
         }
 
         if (notNull(props, OAUTH_APPSECRET)){

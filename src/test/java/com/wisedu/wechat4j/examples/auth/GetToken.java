@@ -1,4 +1,4 @@
-package com.wisedu.wechat.examples.auth;
+package com.wisedu.wechat4j.examples.auth;
 
 import com.wisedu.wechat4j.WechatException;
 import com.wisedu.wechat4j.auth.AccessToken;
@@ -9,10 +9,10 @@ public class GetToken {
         try {
             Wechat wechat = Wechat.newInstance();
             AccessToken token = wechat.getAccessToken();
-            if (token != null){
-                System.out.println(token);
+            if (token.getErrCode() == null){
+                System.out.println("Get Token Succeed." + token);
             } else {
-                System.out.println("Fail to Get Access Token");
+                System.err.println("Get Token Failed." + token);
             }
         } catch (WechatException we){
             we.printStackTrace();

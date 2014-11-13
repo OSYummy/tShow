@@ -33,7 +33,7 @@ class ConfigurationBase implements Configuration, Serializable {
         setLoggerFactory(null);
 
         setOAuthToken(null);
-        setOAuthAppId(null);
+        setOAuthAppID(null);
         setOAuthAppSecret(null);
 
         setHttpRetryCount(0);
@@ -87,11 +87,11 @@ class ConfigurationBase implements Configuration, Serializable {
         this.oAuthToken = oAuthToken;
     }
 
-    @Override public final String getOAuthAppId(){
+    @Override public final String getOAuthAppID(){
         return oAuthAppId;
     }
 
-    protected final void setOAuthAppId(String oAuthToken){
+    protected final void setOAuthAppID(String oAuthToken){
         this.oAuthAppId = oAuthToken;
     }
 

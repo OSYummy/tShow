@@ -6,7 +6,7 @@ public final class License implements Serializable {
     private static final long serialVersionUID = 3030137592761879429L;
 
     private final String token;
-    private final String appId;
+    private final String appID;
     private final String appSecret;
 
     private static final License SINGLETON = new License();
@@ -15,9 +15,9 @@ public final class License implements Serializable {
         this(null, null, null);
     }
 
-    public License(String token, String appId, String appSecret) {
+    public License(String token, String appID, String appSecret) {
         this.token = token;
-        this.appId = appId;
+        this.appID = appID;
         this.appSecret = appSecret;
     }
 
@@ -29,8 +29,8 @@ public final class License implements Serializable {
         return token;
     }
 
-    public String getAppId() {
-        return appId;
+    public String getAppID() {
+        return appID;
     }
 
     public String getAppSecret() {
@@ -40,7 +40,7 @@ public final class License implements Serializable {
     @Override public int hashCode(){
         int result = 0;
         result = result*31 + (token!=null? token.hashCode(): 0);
-        result = result*31 + (appId!=null? appId.hashCode(): 0);
+        result = result*31 + (appID!=null? appID.hashCode(): 0);
         result = result*31 + (token!=null? appSecret.hashCode(): 0);
         return result;
     }
@@ -52,7 +52,7 @@ public final class License implements Serializable {
         License that = (License)o;
         if (token!=null? !token.equals(that.token): that.token!=null)
             return false;
-        if (appId!=null? !appId.equals(that.appId): that.appId!=null)
+        if (appID!=null? !appID.equals(that.appID): that.appID!=null)
             return false;
         if (appSecret!=null? !appSecret.equals(that.appSecret): that.appSecret!=null)
             return false;
@@ -62,7 +62,7 @@ public final class License implements Serializable {
     @Override public String toString(){
         return "{"
                 + "token=" + token + ","
-                + "appId=" + appId + ","
+                + "appId=" + appID + ","
                 + "appSecret=" + appSecret + ","
                 + "}";
     }

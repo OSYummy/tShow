@@ -1,4 +1,4 @@
-package com.wisedu.wechat.examples.entity;
+package com.wisedu.wechat4j.examples.entity;
 
 import com.wisedu.wechat4j.WechatException;
 import com.wisedu.wechat4j.client.Wechat;
