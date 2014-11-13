@@ -3,12 +3,12 @@ package com.wisedu.wechat4j.entity;
 import com.wisedu.wechat4j.internal.json.JSONObject;
 
 abstract class ResponseJSONImpl implements Response{
-    private Integer errCode = null;
-    private String errMsg = null;
+    private Integer errCode;
+    private String errMsg;
 
     ResponseJSONImpl(JSONObject jsonObject) {
-        this.errCode = jsonObject.getInt("errcode");
-        this.errMsg = jsonObject.getString("errmsg");
+        this.errCode = jsonObject.has("errcode")? jsonObject.getInt("errcode"): null;
+        this.errMsg = jsonObject.has("errmsg")? jsonObject.getString("errmsg"): null;
     }
 
     @Override public Integer getErrCode(){

@@ -20,12 +20,9 @@ final class AccessTokenJSONImpl extends ResponseJSONImpl implements AccessToken,
 
     AccessTokenJSONImpl(JSONObject jsonObject) {
         super(jsonObject);
-        if (jsonObject.has("access_token")) {
-            this.token = jsonObject.getString("access_token");
-            this.expires = jsonObject.getLong("expires_in");
-        } else {
-            this.object = jsonObject;
-        }
+        this.object = jsonObject;
+        this.expires = object.has("expires_in")? object.getLong("expires_in"): null;
+        this.token = object.has("access_token")? object.getString("access_token"): null;
     }
 
     @Override public String getToken() {
@@ -38,5 +35,16 @@ final class AccessTokenJSONImpl extends ResponseJSONImpl implements AccessToken,
 
     @Override public JSONObject getObject() {
         return object;
+    }
+
+    @Override public String toString() {
+        if (object == null){
+            return "{"
+                    + "\"access_token\": " + token + ", "
+                    + "\"expires\": " + expires
+                    + "}";
+        } else {
+            return object.toString();
+        }
     }
 }
