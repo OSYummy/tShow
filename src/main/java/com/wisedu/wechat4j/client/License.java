@@ -9,10 +9,20 @@ public final class License implements Serializable {
     private final String appId;
     private final String appSecret;
 
+    private static final License SINGLETON = new License();
+
+    public License() {
+        this(null, null, null);
+    }
+
     public License(String token, String appId, String appSecret) {
         this.token = token;
         this.appId = appId;
         this.appSecret = appSecret;
+    }
+
+    public static License getSingleton() {
+        return SINGLETON;
     }
 
     public String getToken() {

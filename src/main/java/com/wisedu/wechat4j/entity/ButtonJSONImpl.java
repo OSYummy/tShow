@@ -9,10 +9,13 @@ import com.wisedu.wechat4j.internal.json.JSONObject;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 final class ButtonJSONImpl implements Button, Serializable {
+    private static final long serialVersionUID = 1822233292916572124L;
+
     private String name;
 
     private ButtonType type;
@@ -21,67 +24,42 @@ final class ButtonJSONImpl implements Button, Serializable {
 
     private String url;
 
-    private List<Button> subButton;
+    private SubButton[] subButtons;
 
-    ButtonJSONImpl(JSONObject json) {
-        init(json);
+    private JSONObject object;
+
+    ButtonJSONImpl(JSONObject jsonObject) {
+        init(jsonObject);
     }
 
-    private void init(JSONObject json){
-        if (!json.isNull("name")){
-            this.name = json.getString("name");
+    private void init(JSONObject jsonObject){
+        this.object = jsonObject;
+        if (!object.isNull("type")){
+            this.type = ButtonType.getInstance(object.getString("type"));
         }
-        if (!json.isNull("sub_button")){
-            JSONArray list = json.getJSONArray("sub_button");
+        if (!object.isNull("name")){
+            this.name = object.getString("name");
+        }
+        if (!object.isNull("key")){
+            this.key = object.getString("key");
+        }
+        if (!object.isNull("url")){
+            this.url = object.getString("url");
+        }
+        if (!object.isNull("sub_button")){
+            JSONArray array = object.getJSONArray("sub_button");
 
-            int size = list.length();
-            subButton = new ArrayList<Button>(size);
+            int size = array.length();
+            subButtons = new SubButton[size];
             for (int i=0; i<size; i++){
-                subButton.add(
-                        new SubButtonJSONImpl(list.getJSONObject(i))
-                );
+                subButtons[i] = new SubButtonJSONImpl(array.getJSONObject(i));
             }
         } else {
-            subButton = Collections.EMPTY_LIST;
-        }
-        if (!json.isNull("type")){
-            this.type = ButtonType.getInstance(json.getString("type"));
-        }
-        if (!json.isNull("key")){
-            this.key = json.getString("key");
-        }
-        if (!json.isNull("url")){
-            this.url = json.getString("url");
+            subButtons = new SubButton[]{};
         }
     }
 
-    static List<Button> createButtonList(HttpResponse response) throws WechatException{
-        try {
-            JSONObject json = response.asJSONObject();
-            return createButtonList(
-                    json.getJSONObject("menu").getJSONArray("button")
-            );
-        } catch (IOException ioe){
-            throw new WechatException(ioe);
-        }
-    }
-
-    static List<Button> createButtonList(JSONArray list) throws WechatException{
-        try {
-            int size = list.length();
-            List<Button> menuList = new ArrayList<Button>();
-            for (int i=0; i<size; i++){
-                JSONObject json = list.getJSONObject(i);
-                Button menu = new ButtonJSONImpl(json);
-                menuList.add(menu);
-            }
-            return menuList;
-        } catch (JSONException jsne){
-            throw new WechatException(jsne);
-        }
-    }
-
-    @Override public ButtonType getButtonType() {
+    @Override public ButtonType getType() {
         return type;
     }
 
@@ -97,25 +75,27 @@ final class ButtonJSONImpl implements Button, Serializable {
         return url;
     }
 
-    @Override public List<Button> getSubButton() {
-        return subButton;
+    @Override public SubButton[] getSubButton() {
+        return subButtons;
     }
 
     @Override public int hashCode(){
         int result = 0;
-        result = result*31 + (name!=null? name.hashCode(): 0);
         result = result*31 + (type!=null? type.hashCode(): 0);
+        result = result*31 + (name!=null? name.hashCode(): 0);
         result = result*31 + (key!=null? key.hashCode(): 0);
         result = result*31 + (url!=null? url.hashCode(): 0);
-        result = result*31 + (subButton!=null? subButton.hashCode(): 0);
+        result = result*31 + (subButtons!=null? Arrays.hashCode(subButtons): 0);
         return result;
     }
 
     @Override public boolean equals(Object o){
         if (o == this) return true;
-        if (o==null || o.getClass()!=this.getClass()) return false;
+        if (o==null || o.getClass()!=this.getClass())
+            return false;
 
         ButtonJSONImpl that = (ButtonJSONImpl)o;
+
         if (name!=null? !name.equals(that.name): that.name!=null)
             return false;
         if (type != that.type)
@@ -124,27 +104,17 @@ final class ButtonJSONImpl implements Button, Serializable {
             return false;
         if (url!=null? !url.equals(that.url): that.url!=null)
             return false;
-        if (subButton!=null? !subButton.equals(that.subButton): that.subButton!=null)
+        if (subButtons!=null? !Arrays.equals(subButtons, that.subButtons): that.subButtons!=null)
             return false;
+
         return true;
     }
 
     @Override public String toString(){
-        StringBuffer sb = new StringBuffer();
-        sb.append("{");
-        sb.append("\"name\": " + (name!=null? "\"" + name + "\"": null) + ",");
-        sb.append("\"type\": " + (type!=null? "\"" + type.toString() + "\"": null) + ",");
-        sb.append("\"key\": " + (key!=null? "\"" + key + "\"": null) + ",");
-        sb.append("\"url\": " + (url!=null? "\"" + url + "\"": null) + ",");
-        sb.append("\"sub_button\": [");
-        for (int i=0; i<subButton.size(); i++){
-            sb.append(subButton.get(i).toString());
-            if (i < subButton.size()-1){
-                sb.append(",");
-            }
+        if (object != null) {
+            return object.toString();
+        } else {
+            return "{}";
         }
-        sb.append("]");
-        sb.append("}");
-        return sb.toString();
     }
 }

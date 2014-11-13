@@ -6,6 +6,6 @@ import com.wisedu.wechat4j.internal.http.HttpResponse;
 import java.io.Serializable;
 import java.util.List;
 
-public interface ObjectFactory extends Serializable {
-    List<Button> createButtonList(HttpResponse response) throws WechatException;
+public interface ObjectFactory {
+    Menu createMenu(HttpResponse response) throws WechatException;
 }

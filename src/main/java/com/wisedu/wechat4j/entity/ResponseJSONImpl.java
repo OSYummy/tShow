@@ -7,8 +7,12 @@ abstract class ResponseJSONImpl implements Response{
     private String errMsg;
 
     ResponseJSONImpl(JSONObject jsonObject) {
-        this.errCode = jsonObject.has("errcode")? jsonObject.getInt("errcode"): null;
-        this.errMsg = jsonObject.has("errmsg")? jsonObject.getString("errmsg"): null;
+        if (!jsonObject.isNull("errcode")) {
+            this.errCode = jsonObject.getInt("errcode");
+        }
+        if (!jsonObject.isNull("errmsg")) {
+            this.errMsg = jsonObject.getString("errmsg");
+        }
     }
 
     @Override public Integer getErrCode(){
@@ -30,11 +34,13 @@ abstract class ResponseJSONImpl implements Response{
         if (o == this) return true;
         if (o==null || o.getClass()!=this.getClass())
             return false;
+
         ResponseJSONImpl that = (ResponseJSONImpl)o;
         if (errCode!=null? !errCode.equals(that.errCode): that.errCode!=null)
             return false;
         if (errMsg!=null? !errMsg.equals(that.errMsg): that.errMsg!=null)
             return false;
+
         return true;
     }
 }

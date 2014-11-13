@@ -1,6 +1,6 @@
 package com.wisedu.wechat4j.entity;
 
-public interface Button{
+public interface SubButton {
     ButtonType getType();
 
     String getName();
@@ -8,6 +8,4 @@ public interface Button{
     String getKey();
 
     String getURL();
-
-    SubButton[] getSubButton();
 }

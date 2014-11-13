@@ -3,37 +3,38 @@ package com.wisedu.wechat4j.entity;
 import com.wisedu.wechat4j.internal.json.JSONObject;
 
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.List;
 
-public class SubButtonJSONImpl implements Button, Serializable {
-    private static final long serialVersionUID = 5620576057943907917L;
+final class SubButtonJSONImpl implements SubButton, Serializable {
+    private static final long serialVersionUID = -1992310994299576938L;
 
     private String name;
     private ButtonType type;
     private String key;
     private String url;
-    private List<Button> subButton;
 
-    public SubButtonJSONImpl(JSONObject json) {
-        if (!json.isNull("name")){
-            this.name = json.getString("name");
+    private JSONObject object;
+
+    public SubButtonJSONImpl(JSONObject jsonObject) {
+        init(jsonObject);
+    }
+
+    private void init(JSONObject jsonObject) {
+        this.object = jsonObject;
+        if (!object.isNull("type")){
+            this.type = ButtonType.getInstance(object.getString("type"));
         }
-        if (!json.isNull("type")){
-            this.type = ButtonType.getInstance(json.getString("type"));
+        if (!object.isNull("name")){
+            this.name = object.getString("name");
         }
-        if (!json.isNull("key")){
-            this.key = json.getString("key");
+        if (!object.isNull("key")){
+            this.key = object.getString("key");
         }
-        if (!json.isNull("url")){
-            this.url = json.getString("url");
-        }
-        if (!json.isNull("sub_button")){
-            subButton = Collections.EMPTY_LIST;
+        if (!object.isNull("url")){
+            this.url = object.getString("url");
         }
     }
 
-    @Override public ButtonType getButtonType() {
+    @Override public ButtonType getType() {
         return type;
     }
 
@@ -49,17 +50,12 @@ public class SubButtonJSONImpl implements Button, Serializable {
         return url;
     }
 
-    @Override public List<Button> getSubButton(){
-        return subButton;
-    }
-
     @Override public int hashCode(){
         int result = 0;
-        result = result*31 + (name!=null? name.hashCode(): 0);
         result = result*31 + (type!=null? type.hashCode(): 0);
+        result = result*31 + (name!=null? name.hashCode(): 0);
         result = result*31 + (key!=null? key.hashCode(): 0);
         result = result*31 + (url!=null? url.hashCode(): 0);
-        result = result*31 + (subButton!=null? subButton.hashCode(): 0);
         return result;
     }
 
@@ -76,18 +72,14 @@ public class SubButtonJSONImpl implements Button, Serializable {
             return false;
         if (url!=null? !url.equals(that.url): that.url!=null)
             return false;
-        if (subButton!=null? !subButton.equals(that.subButton): that.subButton!=null)
-            return false;
         return true;
     }
 
     @Override public String toString(){
-        return "{"
-                + "\"name\": " + (name!=null? "\"" + name + "\"": null) + ","
-                + "\"type\": " + (type!=null? "\"" + type.toString() + "\"": null) + ","
-                + "\"key\": " + (key!=null? "\"" + key + "\"": null) + ","
-                + "\"url\": " + (url!=null? "\"" + url + "\"": null) + ","
-                + "\"sub_button\": []"
-                + "}";
+        if (object != null) {
+            return object.toString();
+        } else {
+            return "{}";
+        }
     }
 }
