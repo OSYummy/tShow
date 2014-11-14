@@ -1,7 +1,7 @@
 package com.wisedu.wechat4j.entity;
 
-public interface Menu{
-    Button[] getButtons();
+public interface Contact {
+    Group[] getGroups();
 
     Response getResponse();
 }

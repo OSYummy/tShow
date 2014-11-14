@@ -14,7 +14,7 @@ final class SubButtonJSONImpl implements SubButton, Serializable {
 
     private JSONObject object;
 
-    public SubButtonJSONImpl(JSONObject jsonObject) {
+    SubButtonJSONImpl(JSONObject jsonObject) {
         init(jsonObject);
     }
 

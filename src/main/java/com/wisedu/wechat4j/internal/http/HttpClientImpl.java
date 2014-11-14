@@ -27,8 +27,8 @@ public class HttpClientImpl extends HttpClientBase implements HttpResponseCode, 
      */
     @Override HttpResponse handleRequest(HttpRequest request) throws IOException {
         HttpResponse response = null;
-        int retryCount = conf.getHttpRetryCount() + 1;
-        for (int retriedConnt=0; retriedConnt<retryCount; retriedConnt++){
+        int retryCount = conf.getHttpRetryCount();
+        for (int retriedConnt=0; retriedConnt<retryCount+1; retriedConnt++){
             int statusCode = -1;
             try {
                 OutputStream os = null;
@@ -43,7 +43,7 @@ public class HttpClientImpl extends HttpClientBase implements HttpResponseCode, 
                             // file upload
                         } else if (HttpParameter.containsJSON(request.getParameters())){
                             // JSON
-                            if (request.getParameters().length > 1){
+                            if (request.getParameters().length > 2){
                                 throw new IOException("Invalid Http Parameters.");
                             }
 
@@ -59,7 +59,7 @@ public class HttpClientImpl extends HttpClientBase implements HttpResponseCode, 
                                         bytes = param.getJsonArray().toString().getBytes("utf-8");
                                     }
                                     os.write(bytes);
-                                } else {
+                                } else if (param.isValue()){
                                 }
                             }
                         } else {
@@ -100,12 +100,12 @@ public class HttpClientImpl extends HttpClientBase implements HttpResponseCode, 
                 }
             } catch (IOException ioe){
                 if (retriedConnt == retryCount){
-                    throw new IOException(ioe);
+                    throw ioe;
                 }
             }
 
             try {
-                Thread.sleep(conf.getHttpRetryIntervalSeconds()*1000);
+                Thread.sleep(conf.getHttpRetryIntervalSeconds());
             } catch (InterruptedException ite){
                 // do noting
             }

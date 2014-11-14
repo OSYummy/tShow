@@ -26,29 +26,33 @@ public final class HttpRequest implements Serializable {
      */
     public HttpRequest(RequestMethod method, String url, HttpParameter[] parameters, Authorization authorization, Map<String, String> requestHeaders) {
         this.method = method;
-        parameters = setAuthorizationTokenParameter(parameters, authorization);
-        if (method!=RequestMethod.POST && parameters!=null && parameters.length!=0){
-            if (url.contains("?")) {
-                this.url = url + "&" + HttpParameter.encodeParameters(parameters);
-            } else {
-                this.url = url + "?" + HttpParameter.encodeParameters(parameters);
-            }
+        HttpParameter[] urlParameters = setAuthorizationTokenParameter(authorization);
+        if (method!=RequestMethod.POST) {
+            urlParameters = HttpParameter.merge(urlParameters, parameters);
             this.parameters = NULL_PARAMETERS;
         } else {
-            this.url = url;
             if (parameters == null) {
                 this.parameters = NULL_PARAMETERS;
             } else {
                 this.parameters = parameters;
             }
         }
+        if (urlParameters!=null && url.length()!=0){
+            if (url.contains("?")) {
+                this.url = url + "&" + HttpParameter.encodeParameters(urlParameters);
+            } else {
+                this.url = url + "?" + HttpParameter.encodeParameters(urlParameters);
+            }
+        } else {
+            this.url = url;
+        }
         this.authorization = authorization;
         this.requestHeaders = requestHeaders;
     }
 
-    private HttpParameter[] setAuthorizationTokenParameter(HttpParameter[] parameters, Authorization authorization) {
-        if (authorization == null) return parameters;
-        return HttpParameter.merge(authorization.generateAuthorizationParameter(), parameters);
+    private HttpParameter[] setAuthorizationTokenParameter(Authorization authorization) {
+        if (authorization == null) return new HttpParameter[]{};
+        return authorization.generateAuthorizationParameter();
     }
 
     public RequestMethod getMethod() {

@@ -7,5 +7,9 @@ import java.io.Serializable;
 import java.util.List;
 
 public interface ObjectFactory {
+    Response createResponse(HttpResponse response) throws WechatException;
+
     Menu createMenu(HttpResponse response) throws WechatException;
+
+    Contact createContact(HttpResponse response) throws WechatException;
 }

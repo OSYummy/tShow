@@ -154,6 +154,10 @@ public class HttpParameter implements Comparable<HttpParameter>, Serializable {
         return isJSONObject() || isJSONArray();
     }
 
+    public boolean isValue() {
+        return value != null;
+    }
+
     public static boolean containsFile(HttpParameter[] params){
         boolean containsFiles = false;
         if (params == null){
@@ -296,6 +300,8 @@ public class HttpParameter implements Comparable<HttpParameter>, Serializable {
                 + "value=" + "\'" + value + "\',"
                 + "file=" + "\'" + file + "\',"
                 + "fileBody=" + "\'" + fileBody + "\',"
+                + "jsonObject=" + "\'" + jsonObject + "\',"
+                + "jsonArray=" + "\'" + jsonArray + "\',"
                 + "}";
     }
 }

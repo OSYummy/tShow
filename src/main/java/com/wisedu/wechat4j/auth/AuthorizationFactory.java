@@ -21,7 +21,7 @@ public final class AuthorizationFactory {
         if (oauthAppSecret == null){
             oauthAppSecret = conf.getOAuthAppSecret();
         }
-        if (oauthToken!=null && oauthAppID!=null && oauthAppSecret!=null){
+        if (oauthToken!=null && oauthAppID!=null && oauthAppSecret!=null) {
             OAuthAuthorization oauth = new OAuthAuthorization(conf, http);
             oauth.setOAuthApp(oauthToken, oauthAppID, oauthAppSecret);
             String accessToken = conf.getOAuthAccessToken();

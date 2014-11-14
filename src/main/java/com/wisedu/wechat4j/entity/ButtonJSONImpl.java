@@ -1,17 +1,10 @@
 package com.wisedu.wechat4j.entity;
 
-import com.wisedu.wechat4j.WechatException;
-import com.wisedu.wechat4j.internal.http.HttpResponse;
 import com.wisedu.wechat4j.internal.json.JSONArray;
-import com.wisedu.wechat4j.internal.json.JSONException;
 import com.wisedu.wechat4j.internal.json.JSONObject;
 
-import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 final class ButtonJSONImpl implements Button, Serializable {
     private static final long serialVersionUID = 1822233292916572124L;

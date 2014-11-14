@@ -3,7 +3,9 @@ package com.wisedu.wechat4j.client;
 import com.wisedu.wechat4j.WechatException;
 import com.wisedu.wechat4j.conf.Configuration;
 import com.wisedu.wechat4j.entity.Button;
+import com.wisedu.wechat4j.entity.Contact;
 import com.wisedu.wechat4j.entity.Menu;
+import com.wisedu.wechat4j.entity.Response;
 import com.wisedu.wechat4j.internal.http.HttpParameter;
 import com.wisedu.wechat4j.internal.http.HttpResponse;
 import com.wisedu.wechat4j.internal.json.JSONObject;
@@ -41,15 +43,27 @@ class WechatImpl extends WechatBaseImpl implements Serializable {
         return factory.createMenu(get(conf.getRestBaseURL() + "menu/get", null));
     }
 
-    public void createMenu(Menu menu) throws WechatException{
+    public Response createMenu(Menu menu) throws WechatException{
         String url = conf.getRestBaseURL() + "menu/create";
         HttpParameter[] params = new HttpParameter[]{
                 new HttpParameter(new JSONObject())
         };
-        post(url, params);
+        return factory.createResponse(post(url, params));
     }
 
-    public void deleteMenu() throws WechatException{
-        get(conf.getRestBaseURL() + "menu/delete", null);
+    public Response createMenu(JSONObject jsonObject) throws WechatException{
+        String url = conf.getRestBaseURL() + "menu/create";
+        HttpParameter[] params = new HttpParameter[] {
+                new HttpParameter(jsonObject)
+        };
+        return factory.createResponse(post(url, params));
+    }
+
+    public Response deleteMenu() throws WechatException{
+        return factory.createResponse(get(conf.getRestBaseURL() + "menu/delete", null));
+    }
+
+    public Contact getContact() throws WechatException{
+        return factory.createContact(get(conf.getRestBaseURL() + "groups/get", null));
     }
 }

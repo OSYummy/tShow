@@ -8,24 +8,23 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.Arrays;
 
-final class MenuJSONImpl extends ResponseJSONImpl implements Menu, Serializable {
+final class MenuJSONImpl implements Menu, Serializable {
     private static final long serialVersionUID = -176057211148577738L;
 
     private Button[] buttons;
-    private JSONObject object;
+    private Response response;
 
     MenuJSONImpl(HttpResponse response) throws IOException {
         this(response.asJSONObject());
     }
 
     MenuJSONImpl(JSONObject jsonObject) {
-        super(jsonObject);
         init(jsonObject);
     }
 
     private void init(JSONObject jsonObject) {
-        this.object = jsonObject;
-        if (!object.isNull("menu")) {
+        response = new ResponseJSONImpl(jsonObject);
+        if (!jsonObject.isNull("menu")) {
             JSONObject menu = jsonObject.getJSONObject("menu");
             if (!menu.isNull("button")) {
                 JSONArray array = menu.getJSONArray("button");
@@ -49,8 +48,15 @@ final class MenuJSONImpl extends ResponseJSONImpl implements Menu, Serializable 
         return buttons;
     }
 
-    @Override public JSONObject getObject() {
-        return object;
+    @Override public Response getResponse(){
+        return response;
+    }
+
+    @Override public int hashCode() {
+        int result = super.hashCode();
+        result = 31*result + (buttons!=null? Arrays.hashCode(buttons): 0);
+        result = 31*result + (response!=null? response.hashCode(): 0);
+        return result;
     }
 
     @Override public boolean equals(Object o) {
@@ -63,24 +69,17 @@ final class MenuJSONImpl extends ResponseJSONImpl implements Menu, Serializable 
 
         if (!Arrays.equals(buttons, that.buttons))
             return false;
-        if (object!= null? !object.equals(that.object): that.object!=null)
+        if (response!=null? !response.equals(that.response): that.response!=null)
             return false;
 
         return true;
     }
 
-    @Override public int hashCode() {
-        int result = super.hashCode();
-        result = 31*result + (buttons!=null? Arrays.hashCode(buttons): 0);
-        result = 31*result + (object!=null? object.hashCode(): 0);
-        return result;
-    }
-
     @Override public String toString() {
-        if (object != null) {
-            return object.toString();
+        if (response != null) {
+            return response.toString();
         } else {
-            return "{}";
+            return "{\"menu\": {}}";
         }
     }
 }
