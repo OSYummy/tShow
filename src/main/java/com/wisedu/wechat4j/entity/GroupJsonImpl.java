@@ -26,6 +26,9 @@ final class GroupJSONImpl implements Group, Serializable {
         if (!object.isNull("count")){
             this.count = object.getInt("count");
         }
+        if (!object.isNull("groupid")) {
+            this.id = object.getInt("groupid");
+        }
     }
 
     @Override public Integer getID() {

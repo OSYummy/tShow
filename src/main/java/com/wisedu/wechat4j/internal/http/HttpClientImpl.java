@@ -43,7 +43,7 @@ public class HttpClientImpl extends HttpClientBase implements HttpResponseCode, 
                             // file upload
                         } else if (HttpParameter.containsJSON(request.getParameters())){
                             // JSON
-                            if (request.getParameters().length > 2){
+                            if (request.getParameters().length > 1){
                                 throw new IOException("Invalid Http Parameters.");
                             }
 

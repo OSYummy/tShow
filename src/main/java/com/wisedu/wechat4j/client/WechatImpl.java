@@ -66,4 +66,36 @@ class WechatImpl extends WechatBaseImpl implements Serializable {
     public Contact getContact() throws WechatException{
         return factory.createContact(get(conf.getRestBaseURL() + "groups/get", null));
     }
+
+    public Contact createContact(JSONObject jsonObject) throws WechatException {
+        String url = conf.getRestBaseURL() + "groups/create";
+        HttpParameter[] params = new HttpParameter[] {
+                new HttpParameter(jsonObject)
+        };
+        return factory.createContact(post(url, params));
+    }
+
+    public Contact queryContact(JSONObject jsonObject) throws WechatException {
+        String url = conf.getRestBaseURL() + "groups/getid";
+        HttpParameter[] params = new HttpParameter[] {
+          new HttpParameter(jsonObject)
+        };
+        return factory.createContact(post(url, params));
+    }
+
+    public Response updateContact(JSONObject jsonObject) throws WechatException {
+        String url = conf.getRestBaseURL() + "groups/update";
+        HttpParameter[] params = new HttpParameter[] {
+                new HttpParameter(jsonObject)
+        };
+        return factory.createResponse(post(url, params));
+    }
+
+    public Response moveContact(JSONObject jsonObject) throws WechatException {
+        String url = conf.getRestBaseURL() + "groups/members/update";
+        HttpParameter[] params = new HttpParameter[] {
+                new HttpParameter(jsonObject)
+        };
+        return factory.createResponse(post(url, params));
+    }
 }
