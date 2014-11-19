@@ -132,14 +132,12 @@ public class WechatController {
             if (msgTypeNode!=null && "text".equals(msgTypeNode.getTextContent())){
                 String tlcl = "http://billie66.github.io/TLCL/";
                 CDATASection contentNode = (CDATASection)(root.getElementsByTagName("Content").item(0).getChildNodes().item(0));
-                contentNode.setData("<a href=\"" + tlcl + "\">tlcl</a><p style=\"color:red\">Style</p>");
+                contentNode.setData("Holiday Request For Pony(<a href=\"" + tlcl + "\">tlcl</a>)");
 
                 root.removeChild(root.getElementsByTagName("MsgId").item(0));
                 root.removeChild(root.getElementsByTagName("AgentID").item(0));
             }
         }
-
-
 
         String sEncryptMsg = null;
         if (wxcpt!=null && document!=null){

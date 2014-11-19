@@ -1,0 +1,17 @@
+.float-left {
+    float: left;
+}
+
+#container {
+    width: 1200px;
+    padding: 10px;
+    margin: 0 auto;
+}
+
+#content {
+    width: 990;
+}
+
+.clear {
+    clear: both;
+}
