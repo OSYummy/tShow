@@ -181,7 +181,7 @@ public class WechatController {
     @RequestMapping(value = "/qy/more.do")
     public String qyMore(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
         String code = request.getParameter("code");
-        String agentid = "4";
+        String agentid = request.getParameter("agentId");
         String accessToken = "KqwpKbEUoj3PAWMKirEfzMcOkMy3ig6YuRJmzOe4uuY";
         String url = "https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo?"
                 + "access_token=" + accessToken + "&code=" + code + "&agentid=" + agentid;
@@ -202,6 +202,16 @@ public class WechatController {
             e.printStackTrace();
         }
         return "wechat/more";
+    }
+
+    @RequestMapping(value = "/qy/game.do")
+    public String qyGame(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
+        String code = request.getParameter("code");
+        String state = request.getParameter("state");
+
+        String agentId = request.getParameter("agentId");
+        String corpId = request.getParameter("corpId");
+        return "";
     }
 
     // 公众号
