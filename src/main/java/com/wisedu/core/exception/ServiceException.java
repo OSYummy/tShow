@@ -1,41 +1,101 @@
 package com.wisedu.core.exception;
 
-import java.io.PrintStream;
-import java.rmi.RemoteException;
+import java.io.Serializable;
 
-/**
- * Created with IntelliJ IDEA.
- * User: YUMMY
- * Date: 14-6-20
- * Time: 上午10:15
- * To change this template use File | Settings | File Templates.
- */
-public class ServiceException extends RemoteException {
-    private Throwable _cause;
+// Service Exception
+public class ServiceException
+        extends RuntimeException implements Serializable {
+    private static final long serialVersionUID = 953273024086278779L;
+
+    private String errMsg;
+    private Integer errCode;
 
     public ServiceException(){
         super();
     }
 
-    public ServiceException(String message){
-        super(message);
+    public ServiceException(String errMsg){
+        super(errMsg);
+        this.errMsg = errMsg;
     }
 
-    public ServiceException(String message, Throwable cause){
-        super(message);
-        _cause = cause;
+    public ServiceException(String errMsg, Throwable cause) {
+        super(errMsg, cause);
+        this.errMsg = errMsg;
     }
 
-    public Throwable getCause(){
-        return _cause;
+    public ServiceException(String errMsg, Integer errCode) {
+        super(errMsg);
+        this.errMsg = errMsg;
+        this.errCode = errCode;
     }
 
-    public String getMessage() {
-        String message = super.getMessage();
-        if (getCause() == null) {
-            return message;
+    public String getErrMsg() {
+        return errMsg;
+    }
+
+    public Integer getErrCode() {
+        return errCode;
+    }
+
+    @Override public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o==null || getClass()!=o.getClass()) return false;
+
+        ServiceException that = (ServiceException)o;
+
+        if (errMsg!=null? !errMsg.equals(that.errMsg): that.errMsg!=null) return false;
+        if (errCode!=null? !errCode.equals(that.errCode): that.errCode!=null) return false;
+
+        return true;
+    }
+
+    @Override public int hashCode() {
+        int result = 0;
+        result = 31*result + (errMsg!=null? errMsg.hashCode(): 0);
+        result = 31*result + (errCode!=null? errCode.hashCode(): 0);
+        return result;
+    }
+}
+
+/*
+public class ServiceException
+        extends RuntimeException implements Serializable {
+    private String errMsg;
+    private Integer errCode;
+
+    public ServiceException(){
+
+    }
+
+    public ServiceException(String errMsg){
+        this.errMsg = errMsg;
+    }
+
+    public ServiceException(String errMsg, Throwable cause) {
+        super(cause);
+        this.errMsg = errMsg;
+    }
+
+    public ServiceException(Integer errCode, String errMsg) {
+        this.errMsg = errMsg;
+        this.errCode = errCode;
+    }
+
+    public String getErrMsg() {
+        return errMsg;
+    }
+
+    public Integer getErrCode() {
+        return errCode;
+    }
+
+    @Override public String getMessage() {
+        Throwable cause = super.getCause();
+        if (cause == null) {
+            return this.errMsg;
         } else {
-            return message + "; nested exception is: " + _cause;
+            return this.errMsg + "; nested exception is: " + cause;
         }
     }
 
@@ -44,12 +104,32 @@ public class ServiceException extends RemoteException {
     }
 
     public void printStackTrace(PrintStream ps){
-        if (getCause() == null) {
-            super.printStackTrace(ps);
-        } else {
+        Throwable cause = super.getCause();
+        if (cause != null) {
             ps.println(this);
             ps.print("Caused by: ");
-            getCause().printStackTrace(ps);
+            cause.printStackTrace(ps);
+        } else {
+            super.printStackTrace(ps);
         }
     }
-}
+
+    @Override public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o==null || getClass()!=o.getClass()) return false;
+
+        ServiceException that = (ServiceException)o;
+
+        if (errMsg!=null? !errMsg.equals(that.errMsg): that.errMsg!=null) return false;
+        if (errCode!=null? !errCode.equals(that.errCode): that.errCode!=null) return false;
+
+        return true;
+    }
+
+    @Override public int hashCode() {
+        int result = 0;
+        result = 31*result + (errMsg!=null? errMsg.hashCode(): 0);
+        result = 31*result + (errCode!=null? errCode.hashCode(): 0);
+        return result;
+    }
+}*/
