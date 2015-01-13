@@ -8,13 +8,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-/**
- * Created with IntelliJ IDEA.
- * User: YUMMY
- * Date: 14-7-10
- * Time: 下午3:15
- * To change this template use File | Settings | File Templates.
- */
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 @Controller
 @RequestMapping(value="/home")
 public class HomeController {
@@ -27,30 +26,32 @@ public class HomeController {
     }
 
     @RequestMapping(value="/mgmt.do")
-    public String mgmt(ModelMap model){
-        Integer errCode = null;
+    public void mgmt(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
         String errMsg = null;
+        Integer errCode = null;
+        Map data = new HashMap<String, Object>();
         try {
-            model.addAttribute("greet", "我是首页");
 
-            errCode = ServiceCode.SERVICE_OK.getErrCode();
             errMsg = ServiceCode.SERVICE_OK.getErrMsg();
+            errCode = ServiceCode.SERVICE_OK.getErrCode();
         } catch (ServiceException se) {
             if (se.getErrCode() == null){
-                errCode = se.getErrCode();
                 errMsg = se.getErrMsg();
+                errCode = se.getErrCode();
             } else {
                 log.error(se.getMessage());
-                errCode = ServiceCode.SERVICE_ERROR.getErrCode();
                 errMsg = ServiceCode.SERVICE_ERROR.getErrMsg();
+                errCode = ServiceCode.SERVICE_ERROR.getErrCode();
             }
         } catch (Exception e) {
             log.error(e.getMessage());
-            errCode = ServiceCode.SERVICE_ERROR.getErrCode();
             errMsg = ServiceCode.SERVICE_ERROR.getErrMsg();
+            errCode = ServiceCode.SERVICE_ERROR.getErrCode();
         }
-        model.addAttribute("errCode", errCode);
-        model.addAttribute("errMsg", errMsg);
-        return "home/index";
+        response.setContentType("application/json;charset=UTF-8");
+        response.getWriter().print(
+                ""
+        );
     }
 }
