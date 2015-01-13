@@ -19,6 +19,12 @@ public class ServiceException
         this.errMsg = errMsg;
     }
 
+    public ServiceException(ServiceCode serviceCode) {
+        super(serviceCode.getErrMsg());
+        this.errMsg = serviceCode.getErrMsg();
+        this.errCode = serviceCode.getErrCode();
+    }
+
     public ServiceException(String errMsg, Throwable cause) {
         super(errMsg, cause);
         this.errMsg = errMsg;
